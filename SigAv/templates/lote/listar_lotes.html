@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lotes</h1>
+    {% if lote_list %}
+    <ul>
+        {% for lote in lote_list %}
+        <li>
+            {{lote.data_chegada}} - {{lote.quantidade_inicial}} -> {{lote.localidade}} ::: {{lote.status}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        {% for lote in resultado %}
+        <li>
+            {{lote.0}}
+        </li>
+        {% endfor %}
+    {% endif %} 
+
+    <h2>Escolher cidade</h2>
+    <form action="{% url 'lote:escolher_cidade' %}" method="post">
+        {% csrf_token %}
+        <label>Cidade</label> 
+        <input type="text" name="cidade"/>
+        <input type="submit" class="btn btn-success" value="Buscar">
+    </form>
+</body>
+</html>
