@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Fase_postura, Movimento_diario_postura
+
+admin.site.register(Fase_postura)
+admin.site.register(Movimento_diario_postura)

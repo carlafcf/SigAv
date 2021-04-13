@@ -20,6 +20,7 @@ STATUS = [
 ]
 
 class Lote(models.Model):
+    id = models.AutoField(primary_key=True) #evita comflitos com chaves Id já criadas
     codigo = models.CharField(max_length=50, unique=True)
     aptidao = models.CharField(max_length=1, choices=APTIDAO, default='B')
     data_chegada = models.DateField(default=date.today)
@@ -36,6 +37,7 @@ class Lote(models.Model):
         ordering = ('status','data_chegada',)
 
 class Registro_diario_lote(models.Model):
+    id = models.AutoField(primary_key=True)
     peso = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
     mortalidade = models.PositiveIntegerField()
     lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
