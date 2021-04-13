@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 
+
 APTIDAO = [
     ('A', 'Corte'),
     ('B', 'Postura'),
