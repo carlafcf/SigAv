@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lotes</h1>
+    {% if lote_list %}
+    <ul>
+        {% for lote in lote_list %}
+        <li>
+            {{lote.data_chegada}} - {{lote.quantidade_inicial}} -> {{lote.localidade}} ::: {{lote.get_status_display}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Não há lotes cadastrados.</p>
+    {% endif %}
+</body>
+</html>
