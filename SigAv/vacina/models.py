@@ -9,46 +9,44 @@ APLICACAO = [
 ]
 
 ADMINISTRACAO = [
-    ('A', 'X'),
+    ('A', 'Oral'),
     ('B', 'Y'),
     ('C', 'Z'),
 ]
 
 class Vacina(models.Model):
     
-    id = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=100)
-    doses = models.CharField(max_length=50, choices=APLICACAO)
+    # doses = models.CharField(max_length=50, choices=APLICACAO)
+    doses = models.PositiveIntegerField()
 
     def __str__(self):
         return self.tipo
     
     class Meta:
-        ordering = ('tipo','doses',)
+        ordering = ('tipo',)
 
 class Aplicacao_vacina(models.Model):
     
-    id = models.AutoField(primary_key=True)
-    fk_vacina = models.ForeignKey(Vacina, on_delete=models.RESTRICT)
-    fk_lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
+    vacina = models.ForeignKey(Vacina, on_delete=models.RESTRICT)
+    lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
     data = models.DateField(default=date.today)
-    observacoes = models.CharField(max_length=400)
+    observacoes = models.CharField(max_length=400, null=True, blank=True)
       
     def __str__ (self):
-        return self.data
+        return str(self.vacina) + " - " + str(self.lote)
 
     class Meta:
-        ordering = ('data','fk_vacina',)
+        ordering = ('lote','vacina',)
 
 class Tempo_vacinacao(models.Model):
     
-    id = models.AutoField(primary_key=True) #evita comflitos com chaves Id já criadas
-    fk_vacina = models.ForeignKey(Vacina, on_delete=models.RESTRICT)
-    via_administracao = models.CharField(max_length=100, choices=ADMINISTRACAO)
+    vacina = models.ForeignKey(Vacina, on_delete=models.RESTRICT)
+    via_administracao = models.CharField(max_length=1, choices=ADMINISTRACAO)
     periodo_administracao = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.fk_vacina
+        return str(self.vacina)
     
     class Meta:
-        ordering= ('fk_vacina', 'via_administracao',)
+        ordering= ('vacina', 'periodo_administracao',)
