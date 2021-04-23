@@ -1,13 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Lotes</h1>
+{% extends "base.html" %}
+
+{% block titulo %}
+Lotes abertos
+{% endblock %}
+
+
+{% block titulo_lateral %}
+<a href="#" class="btn btn-info btn-icon-split">
+    <span class="icon text-white-50">
+      <i class="fas fa-info-circle"></i>
+    </span>
+    <span class="text">Meu botão</span>
+  </a>
+{% endblock %}
+
+{% block conteudo %}
     {% if lote_list %}
     <ul>
         {% for lote in lote_list %}
@@ -19,5 +26,4 @@
     {% else %}
         <p>Não há lotes cadastrados.</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}

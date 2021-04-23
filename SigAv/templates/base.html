@@ -28,14 +28,14 @@
 
   <!-- Page Wrapper -->
   <div id="wrapper">
+    <!-- Menu lateral -->
      {% if user.is_authenticated %}
-    <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-microscope"></i>
+          <i class="fas fa-egg"></i>
         </div>
         <div class="sidebar-brand-text mx-3">SigAviário</div>
       </a>
@@ -45,7 +45,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'amostra:home' %}">
+        <a class="nav-link" href="{% url 'lote:criar' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Home</span></a>
       </li>
@@ -59,7 +59,7 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'amostra:adicionar' %}">
+        <a class="nav-link collapsed" href="{% url 'lote:detalhes' pk=1 %}">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
@@ -74,8 +74,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="{% url 'amostra:listarAmostraUser' pk=user.pk %}">Ativas</a>
-            <a class="collapse-item" href="{% url 'amostra:listarAmostraUserFinalizada' pk=user.pk %}">Concluídas</a>
+            <a class="collapse-item" href="">Ativas</a>
+            <a class="collapse-item" href="">Concluídas</a>
           </div>
         </div>
       </li>
@@ -89,8 +89,8 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
              <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="{% url 'amostra:listar' %}">Ativas</a>
-            <a class="collapse-item" href="{% url 'amostra:listarFinalizada' %}">Concluídas</a>
+            <a class="collapse-item" href="">Ativas</a>
+            <a class="collapse-item" href="">Concluídas</a>
           </div>
         </div>
       </li>
@@ -104,7 +104,7 @@
       </div>
       {% if user.is_superuser %}
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'exame:CadastrarExame' %}">
+        <a class="nav-link collapsed" href="">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
@@ -119,8 +119,8 @@
         <div id="collapseExame" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
              <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="{% url 'exame:ListarExame' %}">Ativos</a>
-            <a class="collapse-item" href="{% url 'exame:examesInativos' %}">Inativos</a>
+            <a class="collapse-item" href="">Ativos</a>
+            <a class="collapse-item" href="">Inativos</a>
           </div>
         </div>
       </li>
@@ -134,7 +134,7 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'usuario:cadastrar' %}">
+        <a class="nav-link collapsed" href="">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
@@ -148,8 +148,8 @@
         <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
              <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="{% url 'usuario:listar' %}">Ativos</a>
-            <a class="collapse-item" href="{% url 'usuario:inativos' %}">Inativos</a>
+            <a class="collapse-item" href="">Ativos</a>
+            <a class="collapse-item" href="">Inativos</a>
           </div>
         </div>
       </li>
@@ -160,14 +160,14 @@
         Local
       </div>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'local:cadastrarLocal' %}">
+        <a class="nav-link collapsed" href="">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'local:listarLocal' %}">
+        <a class="nav-link collapsed" href="">
           <i class="fa fa-clipboard-list"></i>
           <span>Listar local</span>
         </a>
@@ -222,14 +222,14 @@
 
                   {% for amostra in amostras_pendentes|slice:"3" %}
 
-                    <a class="dropdown-item d-flex align-items-center" href="{% url 'amostra:detalhes' pk=amostra.pk%}">
+                    <a class="dropdown-item d-flex align-items-center" href="">
                       <div class="mr-3">
                         <div class="icon-circle bg-warning">
                           <i class="fas fa-exclamation-triangle text-white"></i>
                         </div>
                       </div>
                       <div>
-                       <form action="{% url 'amostra:listar_alertas' %}" method="POST">
+                       <form action="" method="POST">
                         <div class="small text-gray-500"></div>
                         A amostra <b>{{amostra.origem }} ({{amostra.localidade}}): {{ amostra.identificacao }}</b> cadastrada em
                          <b>{{ amostra.data_coleta|date:"d/m/y" }}</b> ainda não foi concluída.
@@ -238,7 +238,7 @@
                     </a>
                   {% endfor %}
 
-                <a class="dropdown-item text-center small text-gray-500" href="{% url 'amostra:listar_alertas' %}">Mostrar todos</a>
+                <a class="dropdown-item text-center small text-gray-500" href="">Mostrar todos</a>
               </div>
             </li>
 
@@ -252,7 +252,7 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{% url 'usuario:editar' pk=user.pk %}">
+                <a class="dropdown-item" href="">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
@@ -287,7 +287,7 @@
             </div>
           </div>
 
-          {% block content %}
+          {% block conteudo %}
           <!--Dentro dele, sempre usar <div class="row"> para separar elementos em uma mesma linha-->
           {% endblock %}
           <!-- Content Row -->
@@ -332,7 +332,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="{% url 'usuario:logout' %}">Logout</a>
+          <a class="btn btn-primary" href="">Logout</a>
         </div>
       </div>
     </div>
