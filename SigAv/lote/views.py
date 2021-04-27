@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
-from .models import Lote
+from .models import Lote, Registro_diario_lote
 
 from django.db import connection
 
@@ -39,4 +39,3 @@ class DetalharLote(DetailView):
     model = Lote
     template_name = 'lote/detalhes.html'
     # object
-

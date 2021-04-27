@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block titulo %}
-Lotes abertos
+Produção
 {% endblock %}
 
 
@@ -14,15 +14,15 @@ Lotes abertos
 {% endblock %}
 
 {% block conteudo %}
-    {% if lote_list %}
+    {% if producao_list %}
     <ul>
-        {% for lote in lote_list %}
+        {% for producao in producao_list %}
         <li>
-            {{lote.data_chegada}} - {{lote.quantidade_inicial}} -> {{lote.localidade}} ::: {{lote.get_status_display}}
+            {{producao.tipo_sistema}}
         </li>
         {% endfor %}
     </ul>
     {% else %}
-        <p>Não há lotes cadastrados.</p>
+        <p>Não há produção.</p>
     {% endif %}
 {% endblock %}

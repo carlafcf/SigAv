@@ -16,6 +16,7 @@ STATUS = [
 
 class Fase_postura(models.Model):
     
+    
     lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
     tipo_sistema = models.CharField(max_length=1, choices=TIPODECRIACAO)
     data_chegada = models.DateField(default=date.today)

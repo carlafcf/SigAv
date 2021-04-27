@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+
 {% block titulo %}
-Lotes abertos
+Tipos de vacinas
 {% endblock %}
 
 
@@ -14,15 +15,15 @@ Lotes abertos
 {% endblock %}
 
 {% block conteudo %}
-    {% if lote_list %}
+    {% if vacina_list %}
     <ul>
-        {% for lote in lote_list %}
+        {% for vacina in vacina_list %}
         <li>
-            {{lote.data_chegada}} - {{lote.quantidade_inicial}} -> {{lote.localidade}} ::: {{lote.get_status_display}}
+            {{vacina.tipo}} -> {{vacina.doses}}
         </li>
         {% endfor %}
     </ul>
     {% else %}
-        <p>Não há lotes cadastrados.</p>
+        <p>Não há vacinas cadastrados.</p>
     {% endif %}
 {% endblock %}

@@ -11,3 +11,4 @@ urlpatterns = [
     path('deletar/<int:pk>', views.DeletarLote.as_view(), name='deletar'),
     path('detalhes/<int:pk>', views.DetalharLote.as_view(), name='detalhes'),
 ]
+

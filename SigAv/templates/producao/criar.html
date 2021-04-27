@@ -1,7 +1,6 @@
-
 {% extends "base.html" %}
 {% block titulo %}
-Editar Lote
+Início do período produtivo
 {% endblock %}
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +10,16 @@ Editar Lote
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    {% block conteudo %} 
+    {% block titulo_lateral %}
+    <a href="#" class="btn btn-info btn-icon-split">
+    <span class="icon text-white-50">
+      <i class="fas fa-info-circle"></i>
+    </span>
+    <span class="text">Meu botão</span>
+  </a>
+  {% endblock %}
+
+  {% block conteudo %}
     {% load bootstrap4 %}
 </head>
 <body>
@@ -20,7 +28,7 @@ Editar Lote
         <form method="post">
           {% csrf_token %}
           {% bootstrap_form form %}
-            <input type="submit" class="btn btn-success" value="Atualizar">
+            <input type="submit" class="btn btn-success" value="Cadastrar">
         </form>
       </div>
 </body>

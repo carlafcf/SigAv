@@ -45,7 +45,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'lote:criar' %}">
+        <a class="nav-link" href="{% url 'lote:listar' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Home</span></a>
       </li>
@@ -55,13 +55,20 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Amostras
+        Lotes
       </div>
-
+    
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'lote:detalhes' pk=1 %}">
+        <a class="nav-link collapsed" href="{% url 'lote:criar' %}">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="fa fa-clipboard-list"></i>
+          <span>Registros diário</span>
         </a>
       </li>
 
@@ -69,13 +76,14 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-vial"></i>
-          <span>Minhas amostras</span>
+          <span>Meus lotes</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="">Ativas</a>
-            <a class="collapse-item" href="">Concluídas</a>
+            <h6 class="collapse-header">Status:</h6>
+            <a class="collapse-item" href="">Isolamento</a>
+            <a class="collapse-item" href="">Liberados para produção</a>
+            <a class="collapse-item" href="">Finalizados</a>
           </div>
         </div>
       </li>
@@ -100,15 +108,45 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Exames
+        Vacinas
       </div>
       {% if user.is_superuser %}
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="{% url 'vacina:criar' %}">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="fa fa-clipboard-list"></i>
+          <span>Aplicação da vacina</span>
+        </a>
+      </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+              Produção
+            </div>
+           
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="{% url 'producao:criar' %}">
+                <i class="fas fa-plus"></i>
+                <span>Cadastrar</span>
+              </a>
+            </li>
+      
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="">
+                <i class="fa fa-clipboard-list"></i>
+                <span>Movimentação diária</span>
+              </a>
+            </li>
+
       {% endif %}
 
        <li class="nav-item">
@@ -302,7 +340,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span> Laboratório de Parasitologia Animal EAJ/UFRN</span>
+            <span> SIGAV EAJ/UFRN</span>
           </div>
         </div>
       </footer>

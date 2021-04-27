@@ -21,6 +21,7 @@ STATUS = [
 ]
 
 class Lote(models.Model):
+    
     codigo = models.CharField(max_length=50, unique=True)
     aptidao = models.CharField(max_length=1, choices=APTIDAO, default='B')
     data_chegada = models.DateField(default=date.today)

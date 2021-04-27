@@ -1,8 +1,9 @@
-
 {% extends "base.html" %}
+
 {% block titulo %}
-Editar Lote
+Detalhes do registro
 {% endblock %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,18 +12,15 @@ Editar Lote
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    {% block conteudo %} 
+    {% block conteudo %}
     {% load bootstrap4 %}
 </head>
 <body>
-    <div class="container">
-
-        <form method="post">
-          {% csrf_token %}
-          {% bootstrap_form form %}
-            <input type="submit" class="btn btn-success" value="Atualizar">
-        </form>
-      </div>
+    <h1>Lote {{object}}</h1>
+    
+    Data: {{object.data_chegada}} <br>
+    Localidade: {{object.localidade}} <br>
 </body>
 </html>
+
 {% endblock %}
