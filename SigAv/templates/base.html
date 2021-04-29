@@ -54,42 +54,63 @@
       <hr class="sidebar-divider">
 
       <!-- Heading -->
-      <div class="sidebar-heading">
+      <!--<div class="sidebar-heading">
         Lotes
-      </div>
+      </div>-->
     
-      <li class="nav-item">
+    
+     <!--<li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'lote:criar' %}">
           <i class="fas fa-plus"></i>
-          <span>Cadastrar</span>
+          <span>Abertura de Lote</span>
+        </a>
+      </li>-->
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+        Informações preliminares
+        </div>
+           
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-plus"></i>
+          <span>Cadastros</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+           <!-- <h6 class="collapse-header">Status:</h6>-->
+            <a class="collapse-item" href="{% url 'lote:criar' %}">Lote de confinamento</a>
+            <a class="collapse-item" href="{% url 'producao:criar' %}">Lote de Produção</a>           
+            <a class="collapse-item" href="{% url 'vacina:criar' %}">Tipos de vacinas</a>
+          </div>
+        </div>
+      </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+                  <!-- Heading -->
+            <div class="sidebar-heading">
+              Registros diários
+            </div>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="fas fa-border-all"></i>
+          <span>Lote de confinamento</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="">
-          <i class="fa fa-clipboard-list"></i>
-          <span>Registros diário</span>
+          <i class="fas fa-egg"></i>
+          <span>Lote de produção</span>
         </a>
-      </li>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-vial"></i>
-          <span>Meus lotes</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Status:</h6>
-            <a class="collapse-item" href="">Isolamento</a>
-            <a class="collapse-item" href="">Liberados para produção</a>
-            <a class="collapse-item" href="">Finalizados</a>
-          </div>
-        </div>
       </li>
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-vials"></i>
           <span>Todas as amostras</span>
@@ -101,26 +122,26 @@
             <a class="collapse-item" href="">Concluídas</a>
           </div>
         </div>
-      </li>
+      </li>-->
 
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Vacinas
+        Registros de vacinação
       </div>
-      {% if user.is_superuser %}
+      <!--{% if user.is_superuser %}
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'vacina:criar' %}">
+        <a class="nav-link collapsed" href="">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
-      </li>
+      </li>-->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="">
-          <i class="fa fa-clipboard-list"></i>
+          <i class="fas fa-syringe"></i>
           <span>Aplicação da vacina</span>
         </a>
       </li>
@@ -129,11 +150,11 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
-              Produção
+           <div class="sidebar-heading">
+              Relatórios
             </div>
            
-            <li class="nav-item">
+           <!--  <li class="nav-item">
               <a class="nav-link collapsed" href="{% url 'producao:criar' %}">
                 <i class="fas fa-plus"></i>
                 <span>Cadastrar</span>
@@ -147,18 +168,18 @@
               </a>
             </li>
 
-      {% endif %}
+      {% endif %}-->
 
-       <li class="nav-item">
+     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExame" aria-expanded="true" aria-controls="collapseUtilities">
-           <i class="fa fa-clipboard-list"></i>
-          <span>Todos exames</span>
+          <i class="fas fa-list-alt"></i>
+          <span>Gerenciais</span>
         </a>
         <div id="collapseExame" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="">Ativos</a>
-            <a class="collapse-item" href="">Inativos</a>
+             <h6 class="collapse-header">Tipo:</h6>
+            <a class="collapse-item" href="">Lotes de confinamento</a>
+            <a class="collapse-item" href="">Lotes de produção</a>
           </div>
         </div>
       </li>
@@ -243,12 +264,13 @@
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-
+            
             <!-- Nav Item - Alerts -->
 
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
+                
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">{{ amostras_pendentes_count }}</span>
               </a>
@@ -341,7 +363,19 @@
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span> SIGAV EAJ/UFRN</span>
+ 
           </div>
+
+          <div class="row">
+            <div classs="col-sm-4"> 
+              <a href="#" class="thumbnail">
+                  <img src="static/img/teste.jpg">
+              </a>
+            </div>
+          </div>
+ 
+          </div>
+
         </div>
       </footer>
       <!-- End of Footer -->

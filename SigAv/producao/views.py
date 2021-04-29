@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
-from .models import Fase_postura, Movimento_diario_postura
+from .models import Fase_postura
 
 from django.db import connection
 
@@ -23,7 +23,7 @@ class Listar_Producao(ListView):
 
 class Editar_Producao(UpdateView):
     model = Fase_postura
-    fields = ['tipo_sistema', 'data_chegada', 'quantidade_aves_chegada', 'quantidade_aves_final',
+    fields = ['lote', 'tipo_sistema', 'data_chegada', 'quantidade_aves_chegada', 'quantidade_aves_final',
                 'observacoes']
     template_name = 'producao/editar.html'
     success_url = reverse_lazy('producao:listar')

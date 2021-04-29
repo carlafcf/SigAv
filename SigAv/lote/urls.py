@@ -12,3 +12,4 @@ urlpatterns = [
     path('detalhes/<int:pk>', views.DetalharLote.as_view(), name='detalhes'),
 ]
 
+

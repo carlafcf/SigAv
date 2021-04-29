@@ -18,7 +18,7 @@ Produção
     <ul>
         {% for producao in producao_list %}
         <li>
-            {{producao.tipo_sistema}}
+            {{producao.tipo_sistema}} - {{data_chegada}} - {{quantidade_aves_chegada}}
         </li>
         {% endfor %}
     </ul>
