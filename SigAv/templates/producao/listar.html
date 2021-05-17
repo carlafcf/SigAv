@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titulo %}
+Produção
+{% endblock %}
+
+
+{% block titulo_lateral %}
+<a href="#" class="btn btn-info btn-icon-split">
+    <span class="icon text-white-50">
+      <i class="fas fa-info-circle"></i>
+    </span>
+    <span class="text">Meu botão</span>
+  </a>
+{% endblock %}
+
+{% block conteudo %}
+    {% if producao_list %}
+    <ul>
+        {% for producao in producao_list %}
+        <li>
+            {{producao.tipo_sistema}} - {{data_chegada}} - {{quantidade_aves_chegada}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Não há produção.</p>
+    {% endif %}
+{% endblock %}
