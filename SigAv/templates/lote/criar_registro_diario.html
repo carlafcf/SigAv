@@ -6,6 +6,15 @@ Registro diário
 {% endblock %}
 
 {% block conteudo %}     
+{% if messages %}
+    {% for message in messages %}
+        <div class="card mb-4 py-0 border-left-danger">
+          <div class="card-body">
+            {{ message }}
+          </div>
+        </div>
+    {% endfor %}
+{% endif %}
 {% load bootstrap4 %}
         <form method="post">
           {% csrf_token %}

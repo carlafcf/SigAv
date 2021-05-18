@@ -116,7 +116,6 @@
           <thead>
             <tr>
               <th>Data</th>
-              <th>Status</th>
               <th>Peso</th>
               <th>Mortalidade</th>
               <th></th>
@@ -126,8 +125,7 @@
             <!-- Tabela de registros diários -->
             {% for registro in registros_diarios %}
             <tr>
-                <td>{{registro.data|date:"D d/m/y" }}</td>
-                <td>{{registro.lote.get_status_display}}</td>
+                <td>{{registro.data|date:"d/m/y (D)" }}</td>
                 <td>
                   {% if registro.peso != None %}
                     {{registro.peso}} kg
@@ -247,7 +245,7 @@
             labels: {{  datas_peso | safe }},
             datasets: [
             {
-                label: '#Peso',
+                label: 'Peso (kg)',
                 data: {{ pesos | safe }},
                 backgroundColor: 'rgba(74, 111, 220, 0)',
                 borderColor: '#1cc88a',

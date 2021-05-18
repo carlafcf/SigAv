@@ -45,19 +45,29 @@ def criar_registro_diario(request):
     if (request.method == "POST"):
         form = RegistroDiarioLoteForm(request.POST)
         if (form.is_valid()):
-            registro_diario = Registro_diario_lote()
-            registro_diario.data = form.cleaned_data['data']
-            registro_diario.peso = form.cleaned_data['peso']
-            registro_diario.mortalidade = form.cleaned_data['mortalidade']
-            registro_diario.lote = lote_atual
-            registro_diario.save()
+            if (len(Registro_diario_lote.objects.filter(data=form.cleaned_data['data'], lote=lote_atual)) > 0):
+                messages.error(request, 'Já foi adicionado um registro diário neste lote para esta data.')
+            elif (form.cleaned_data['data'] > date.today()):
+                messages.error(request, 'Não é possível realizar um registro para uma data futura.')
+            else:
+                registro_diario = Registro_diario_lote()
+                registro_diario.data = form.cleaned_data['data']
+                registro_diario.peso = form.cleaned_data['peso']
+                registro_diario.mortalidade = form.cleaned_data['mortalidade']
+                registro_diario.lote = lote_atual
+                registro_diario.save()
 
-            lote_atual.quantidade_aves_final = lote_atual.quantidade_aves_final - registro_diario.mortalidade
-            lote_atual.save()
-            return redirect('lote:detalhes')
+                lote_atual.quantidade_aves_final = lote_atual.quantidade_aves_final - registro_diario.mortalidade
+                lote_atual.save()
+                return redirect('lote:detalhes')
     else:
         form = RegistroDiarioLoteForm()
-    return render(request, "lote/criar_registro_diario.html", {'form':form, 'lote': lote_atual})
+    
+    informacoes = {
+        'form':form,
+        'lote': lote_atual
+    }
+    return render(request, "lote/criar_registro_diario.html", informacoes)
 
 class ListarLotes(ListView):
     model = Lote
@@ -88,26 +98,35 @@ class EditarRegistroDiario(UpdateView):
         context = super().get_context_data(**kwargs)
         context['lote'] = self.object.lote
         return context
-    # form
+
+    def form_valid(self, form):
+        nova_mortalidade = form.save(commit=False).mortalidade
+        mortalidade_anterior = Registro_diario_lote.objects.filter(pk=self.object.pk)[0].mortalidade
+        self.object.lote.quantidade_aves_final = self.object.lote.quantidade_aves_final + mortalidade_anterior - nova_mortalidade
+        self.object.lote.save()
+        return super().form_valid(form)
 
 class DeletarRegistroDiario(DeleteView):
     model = Registro_diario_lote
     success_url = reverse_lazy('lote:detalhes')
-    # object
+
+    def delete(self, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.lote.quantidade_aves_final = self.object.lote.quantidade_aves_final + self.object.mortalidade
+        self.object.lote.save()
+        return super(DeletarRegistroDiario, self).delete(*args, **kwargs)
 
 def detalhes(request):
     lote_atual = buscar_lote_atual()
     registros_diarios = Registro_diario_lote.objects.filter(lote=lote_atual).order_by("-data")
     registros_diarios_graficos = registros_diarios.reverse()
-
+    
     # Informações para o gráfico
-    data_hoje = date.today()
     datas_mortalidade = []
     datas_peso = []
     mortalidade = []
     pesos = []
 
-    # Pode ter mais de um registro no dia??
     for i, registro in enumerate(registros_diarios_graficos):
         datas_mortalidade.insert(i, str(registro.data))
         mortalidade.insert(i, registro.mortalidade)
