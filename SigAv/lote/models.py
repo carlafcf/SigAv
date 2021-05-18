@@ -40,7 +40,7 @@ class Lote(models.Model):
 class Registro_diario_lote(models.Model):
     
     peso = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
-    mortalidade = models.PositiveIntegerField()
+    mortalidade = models.PositiveIntegerField(default=0)
     lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
     data = models.DateField(default=date.today)
 
@@ -48,4 +48,4 @@ class Registro_diario_lote(models.Model):
         return str(self.lote) + " - " + str(self.data)
 
     class Meta:
-        ordering = ('lote','-data',)
+        ordering = ('-lote','-data',)

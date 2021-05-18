@@ -17,7 +17,6 @@
   <!-- Custom fonts for this template-->
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
   <!-- Custom styles for this template-->
 
   <link rel="stylesheet" type="text/css" href="{% static 'css/sb-admin-2.css' %}" />
@@ -29,7 +28,6 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Menu lateral -->
-     {% if user.is_authenticated %}
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -48,6 +46,47 @@
         <a class="nav-link" href="{% url 'lote:listar' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Home</span></a>
+      </li>
+
+
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+            <!-- Heading -->
+      <div class="sidebar-heading">
+        Registros diários
+      </div>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'lote:detalhes'%}">
+          <i class="fas fa-border-all"></i>
+          <span>Lote de confinamento</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="fas fa-egg"></i>
+          <span>Lote de produção</span>
+        </a>
+      </li>
+
+
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Registros de vacinação
+      </div>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="fas fa-syringe"></i>
+          <span>Aplicação da vacina</span>
+        </a>
       </li>
 
       <!-- Divider -->
@@ -90,85 +129,10 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-                  <!-- Heading -->
-            <div class="sidebar-heading">
-              Registros diários
-            </div>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="fas fa-border-all"></i>
-          <span>Lote de confinamento</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="fas fa-egg"></i>
-          <span>Lote de produção</span>
-        </a>
-      </li>
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <!-- <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-vials"></i>
-          <span>Todas as amostras</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="">Ativas</a>
-            <a class="collapse-item" href="">Concluídas</a>
-          </div>
-        </div>
-      </li>-->
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Registros de vacinação
-      </div>
-      <!--{% if user.is_superuser %}
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="fas fa-plus"></i>
-          <span>Cadastrar</span>
-        </a>
-      </li>-->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="fas fa-syringe"></i>
-          <span>Aplicação da vacina</span>
-        </a>
-      </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
             <!-- Heading -->
            <div class="sidebar-heading">
               Relatórios
             </div>
-           
-           <!--  <li class="nav-item">
-              <a class="nav-link collapsed" href="{% url 'producao:criar' %}">
-                <i class="fas fa-plus"></i>
-                <span>Cadastrar</span>
-              </a>
-            </li>
-      
-            <li class="nav-item">
-              <a class="nav-link collapsed" href="">
-                <i class="fa fa-clipboard-list"></i>
-                <span>Movimentação diária</span>
-              </a>
-            </li>
-
-      {% endif %}-->
 
      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExame" aria-expanded="true" aria-controls="collapseUtilities">
@@ -183,8 +147,7 @@
           </div>
         </div>
       </li>
-
-      {% if user.is_superuser %}
+      
        <hr class="sidebar-divider">
 
 
@@ -233,9 +196,6 @@
       </li>
 
 
-      {% endif %}
-
-
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -272,7 +232,7 @@
                 <i class="fas fa-bell fa-fw"></i>
                 
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">{{ amostras_pendentes_count }}</span>
+                <span class="badge badge-danger badge-counter">counter</span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
@@ -280,7 +240,7 @@
                   Central de Alertas
                 </h6>
 
-                  {% for amostra in amostras_pendentes|slice:"3" %}
+                  <!-- {% for amostra in amostras_pendentes|slice:"3" %} -->
 
                     <a class="dropdown-item d-flex align-items-center" href="">
                       <div class="mr-3">
@@ -291,12 +251,11 @@
                       <div>
                        <form action="" method="POST">
                         <div class="small text-gray-500"></div>
-                        A amostra <b>{{amostra.origem }} ({{amostra.localidade}}): {{ amostra.identificacao }}</b> cadastrada em
-                         <b>{{ amostra.data_coleta|date:"d/m/y" }}</b> ainda não foi concluída.
+                        A amostra ainda não foi concluída.
                        </form>
                       </div>
                     </a>
-                  {% endfor %}
+                  <!-- {% endfor %} -->
 
                 <a class="dropdown-item text-center small text-gray-500" href="">Mostrar todos</a>
               </div>
@@ -328,7 +287,6 @@
 
         </nav>
         <!-- End of Topbar -->
-        {% endif %}
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -362,20 +320,9 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span> SIGAV EAJ/UFRN</span>
+            <span> SigAv EAJ/UFRN</span>
  
           </div>
-
-          <div class="row">
-            <div classs="col-sm-4"> 
-              <a href="#" class="thumbnail">
-                  <img src="static/img/teste.jpg">
-              </a>
-            </div>
-          </div>
- 
-          </div>
-
         </div>
       </footer>
       <!-- End of Footer -->
@@ -427,8 +374,12 @@
   <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 
   <!-- Page level custom scripts -->
-  <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-  <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+  <!-- <script src="{% static 'js/demo/chart-area-demo.js' %}"></script> -->
+  <!-- <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script> -->
+
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
 
 </body>
 
