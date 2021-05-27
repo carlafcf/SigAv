@@ -10,4 +10,6 @@ urlpatterns = [
     path('editar/<int:pk>', views.Editar_Producao.as_view(), name='editar'),
     path('deletar/<int:pk>', views.Deletar_Producao.as_view(), name='deletar'),
     path('detalhes/<int:pk>', views.Detalhar_Producao.as_view(), name='detalhes'),
+
+    path('cadastrar/', views.cadastrar, name='cadastrar'),
 ]

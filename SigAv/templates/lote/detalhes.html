@@ -5,13 +5,22 @@
   Não há lotes de confinameto cadastrados
 {% else %}
   Lote {{lote}}
-  <p class="m-0 h5 font-weight-regular text-gray-500">{{lote.get_status_display}}</p>
+  <p class="m-0 h5 font-weight-regular text-gray-500">{{lote.get_status_display}}
+    <a href="{% url 'lote:alterar_status' %}" class="btn btn-primary btn-circle btn-sm" value="Alterar status">
+      <i class="fas fa-exchange-alt"></i>
+    </a>
+  </p>
 {% endif %}
 {% endblock %}
 
 {% block titulo_lateral %}
 {% if lote != None %}
-<a href="{% url 'lote:criar_registro_diario' %}" class="btn btn-success btn-icon-split">
+<!-- Adicionar o botão para mudar status aqui -->
+<!-- btn-primary  é o botão azul-->
+
+  
+
+  <a href="{% url 'lote:criar_registro_diario' %}" class="btn btn-success btn-icon-split">
     <span class="icon text-white-50">
       <i class="fas fa-plus"></i>
     </span>
@@ -197,7 +206,7 @@
   </div>
 
 
-  <a href="#" class="btn btn-primary btn-icon-split">
+  <a href="{% url 'producao:cadastrar' %}" class="btn btn-primary btn-icon-split">
     <span class="icon text-white-50">
       <i class="fas fa-egg"></i>
     </span>

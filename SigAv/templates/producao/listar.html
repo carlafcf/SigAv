@@ -14,11 +14,11 @@ Produção
 {% endblock %}
 
 {% block conteudo %}
-    {% if producao_list %}
+    {% if object_list %}
     <ul>
-        {% for producao in producao_list %}
+        {% for producao in object_list %}
         <li>
-            {{producao.tipo_sistema}} - {{data_chegada}} - {{quantidade_aves_chegada}}
+            {{producao.tipo_sistema}} - {{producao.data_chegada}} - {{producao.quantidade_aves_chegada}}
         </li>
         {% endfor %}
     </ul>

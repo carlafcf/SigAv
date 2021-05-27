@@ -45,21 +45,16 @@ def criar_registro_diario(request):
     if (request.method == "POST"):
         form = RegistroDiarioLoteForm(request.POST)
         if (form.is_valid()):
-            if (len(Registro_diario_lote.objects.filter(data=form.cleaned_data['data'], lote=lote_atual)) > 0):
-                messages.error(request, 'Já foi adicionado um registro diário neste lote para esta data.')
-            elif (form.cleaned_data['data'] > date.today()):
-                messages.error(request, 'Não é possível realizar um registro para uma data futura.')
-            else:
-                registro_diario = Registro_diario_lote()
-                registro_diario.data = form.cleaned_data['data']
-                registro_diario.peso = form.cleaned_data['peso']
-                registro_diario.mortalidade = form.cleaned_data['mortalidade']
-                registro_diario.lote = lote_atual
-                registro_diario.save()
+            registro_diario = Registro_diario_lote()
+            registro_diario.data = form.cleaned_data['data']
+            registro_diario.peso = form.cleaned_data['peso']
+            registro_diario.mortalidade = form.cleaned_data['mortalidade']
+            registro_diario.lote = lote_atual
+            registro_diario.save()
 
-                lote_atual.quantidade_aves_final = lote_atual.quantidade_aves_final - registro_diario.mortalidade
-                lote_atual.save()
-                return redirect('lote:detalhes')
+            lote_atual.quantidade_aves_final = lote_atual.quantidade_aves_final - registro_diario.mortalidade
+            lote_atual.save()
+            return redirect('lote:detalhes')
     else:
         form = RegistroDiarioLoteForm()
     
@@ -144,6 +139,16 @@ def detalhes(request):
         'pesos': json.dumps(pesos)
     }
     return render(request, "lote/detalhes.html", informacoes)
+
+# View alterar_status
+def alterar_status(request):
+    lote_atual = buscar_lote_atual()
+    if (lote_atual.status == "A"):
+        lote_atual.status = "B"
+    else:
+        lote_atual.status = "A"
+    lote_atual.save()
+    return redirect("lote:detalhes")
 
 def buscar_lote_atual():
     if (len(Lote.objects.filter(Q(status="A") | Q(status="B"))) > 0):
