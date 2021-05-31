@@ -22,6 +22,7 @@ class Criar_Producao(CreateView):
 
 class Listar_Producao(ListView):
     model = Fase_postura
+    queryset = Fase_postura.objects.filter(status='A')
     template_name = 'producao/listar.html'
     # lote_list
 

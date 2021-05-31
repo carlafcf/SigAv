@@ -12,4 +12,5 @@ urlpatterns = [
     path('detalhes/<int:pk>', views.Detalhar_Producao.as_view(), name='detalhes'),
 
     path('cadastrar/', views.cadastrar, name='cadastrar'),
+
 ]
