@@ -15,13 +15,100 @@ Produção
 
 {% block conteudo %}
     {% if object_list %}
-    <ul>
+
+  
+    
         {% for producao in object_list %}
-        <li>
-            {{producao.tipo_sistema}} - {{producao.data_chegada}} - {{producao.quantidade_aves_chegada}}
-        </li>
+       {%if forloop.counter0|divisibleby:3 %}
+        <br>
+       <div class="row">
+
+       {%endif%}
+
+                <!-- Earnings (Monthly) Card Example -->
+                {%  if producao.tipo_sistema == "A" %}
+                <div class="col-lg-4 col-md-6">
+                  <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
+                          <a class="nav-link collapsed" href="">
+                         
+                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
+                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                          
+                        </a>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% elif producao.tipo_sistema == "B"%}
+              
+    
+                <!-- Earnings (Monthly) Card Example -->
+
+                <div class="col-lg-4 col-md-6">
+                  <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-m font-weight-bold text-success text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
+                          <a class="nav-link collapsed" href="">
+                         
+                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
+                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                          
+                        </a>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {% else %}
+
+                
+                <div class="col-lg-4 col-md-6">
+                  <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-m font-weight-bold text-info text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
+                          <a class="nav-link collapsed" href="">
+                         
+                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
+                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                          
+                        </a>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+    
+               {%endif%}
+               
+
+          {%if forloop.counter|divisibleby:3 %}
+    
+        </div>
+        {% endif %}
+
         {% endfor %}
-    </ul>
+
+      
+    
     {% else %}
         <p>Não há produção.</p>
     {% endif %}
