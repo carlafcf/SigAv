@@ -1,7 +1,14 @@
 
 {% extends "base.html" %}
 {% block titulo %}
-Detalhes do registro
+{% if producao == None %}
+  Não há lotes de producao cadastrados
+{% else %}
+  Lote {{producao}}
+  <p class="m-0 h5 font-weight-regular text-gray-500">{{producao.get_status_display}}
+
+  </p>
+{% endif %}
 {% endblock %}
 <!DOCTYPE html>
 <html lang="en">
@@ -15,9 +22,35 @@ Detalhes do registro
     {% load bootstrap4 %}
 </head>
 <body>
-    <h1> Fase_postura {{object}}</h1> 
-    Sistema de criação: {{object.tipo_sistema}} <br>
+
+    <div class="row">
+        <div class="col">
+          <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Informações</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <p><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</p>
+                    <p><strong>Tipo de seistema de criação:</strong> {{producao.get_tipo_sistema_display}}</p>
+                  </div>
+                  <div class="col-lg-4">
+                    <p><strong>Quantidade de aves transferidas:</strong> {{producao.quantidade_aves_chegada}}</p>
+                    <p><strong>Quantidade de aves atual:</strong> {{pruducao.quantidade_aves_final}}</p>
+                  </div>
+                  <div class="col-lg-4">
+                    <p><strong>STATUS:</strong> {{producao.get_status_display}}</p>
+                    <p style="color: #4e73df"><strong>STATUS:</strong> {{producao.status}}</p>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
 </body>
 </html>
 
 {% endblock %}
+

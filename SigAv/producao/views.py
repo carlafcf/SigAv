@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Q
 from datetime import date
+from django.contrib import messages
+
+import json
 
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
 from .models import Fase_postura
@@ -41,8 +44,10 @@ class Deletar_Producao(DeleteView):
     # object
 
 class Detalhar_Producao(DetailView):
+
     model = Fase_postura
     template_name = 'producao/detalhes.html'
+    
     # object
 
 def cadastrar(request):

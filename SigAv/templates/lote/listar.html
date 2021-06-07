@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-
 {% block titulo %}
-Lotes abertos
+Lotes de confinamento
 {% endblock %}
 
 
@@ -12,28 +11,111 @@ Lotes abertos
     </span>
     <span class="text">Meu botão</span>
   </a>
-
-  
-  <div class="row">
-    <div classs="col-sm-4"> 
-      <a href="#" class="thumbnail">
-          <img src="static/img/teste.jpg">
-      </a>
-    </div>
-  </div>
- 
 {% endblock %}
 
 {% block conteudo %}
-    {% if lote_list %}
-    <ul>
-        {% for lote in lote_list %}
-        <li>
-            {{lote.data_chegada}} - {{lote.quantidade_inicial}} -> {{lote.localidade}} ::: {{lote.get_status_display}}
-        </li>
+    {% if object_list %}
+
+  
+    
+        {% for lote in object_list %}
+       {%if forloop.counter0|divisibleby:3 %}
+        <br>
+       <div class="row">
+
+       {%endif%}
+
+                <!-- Earnings (Monthly) Card Example -->
+                {%  if lote.status == "A" %}
+                <div class="col-lg-4 col-md-6">
+                  <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{lote.get_status_display}}</div>
+                          <a class="nav-link collapsed" href="">
+                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
+                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
+                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.localidade}}</div>
+                          
+                        </a>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% elif lote.status == "B"%}
+              
+    
+                <!-- Earnings (Monthly) Card Example -->
+
+                <div class="col-lg-4 col-md-6">
+                  <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-m font-weight-bold text-success text-uppercase mb-1">{{lote.get_status_display}}</div>
+                          <a class="nav-link collapsed" href="">
+                         
+                            <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
+                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
+                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.localidade}}</div>
+                          
+                        </a>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {% else %}
+
+                
+                <div class="col-lg-4 col-md-6">
+                  <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-m font-weight-bold text-info text-uppercase mb-1">{{lote.get_status_display}}</div>
+                          <a class="nav-link collapsed" href="">
+                         
+                            <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
+                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
+                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.localidade}}</div>
+                          
+                        </a>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+    
+               {%endif%}
+               
+
+          {%if forloop.counter|divisibleby:3 %}
+    
+        </div>
+        {% endif %}
+
         {% endfor %}
-    </ul>
+
+     {% if not object_list|length|divisibleby:3 %} 
+      </div>
+     {% endif %}
+    
     {% else %}
-        <p>Não há lotes cadastrados.</p>
+        <p>Não há produção.</p>
     {% endif %}
+
+  
 {% endblock %}
