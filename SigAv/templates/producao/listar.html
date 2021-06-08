@@ -28,24 +28,26 @@ Produção
                 <!-- Earnings (Monthly) Card Example -->
                 {%  if producao.tipo_sistema == "A" %}
                 <div class="col-lg-4 col-md-6">
-                  <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
-                          <a class="nav-link collapsed" href="">
-                         
-                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
-                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                  <a href="{% url 'producao:detalhes' pk=producao.id %}" style="text-decoration: none;">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
+                            
                           
-                        </a>
-                        </div>
-                        <div class="col-auto">
-                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <div class="mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
+                            <div class="mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                            
+                          
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </div>
                 {% elif producao.tipo_sistema == "B"%}
               
@@ -60,8 +62,8 @@ Produção
                           <div class="text-m font-weight-bold text-success text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
                           <a class="nav-link collapsed" href="">
                          
-                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
-                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                          <div class="mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
+                          <div class="mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
                           
                         </a>
                         </div>
@@ -84,8 +86,8 @@ Produção
                           <div class="text-m font-weight-bold text-info text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
                           <a class="nav-link collapsed" href="">
                          
-                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
-                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
+                          <div class="mb-0 text-gray-800"><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</div>
+                          <div class="mb-0 text-gray-800"><strong>Quantidade:</strong> {{producao.quantidade_aves_final}}</div>
                           
                         </a>
                         </div>
