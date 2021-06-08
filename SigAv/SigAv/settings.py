@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'lote',
-    'vacina',
     'producao',
+    'vacina',
     'usuario',
 ]
 

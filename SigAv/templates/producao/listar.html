@@ -107,9 +107,13 @@ Produção
 
         {% endfor %}
 
-      
+     {% if not object_list|length|divisibleby:3 %} 
+      </div>
+     {% endif %}
     
     {% else %}
         <p>Não há produção.</p>
     {% endif %}
+
+  
 {% endblock %}
