@@ -35,9 +35,9 @@ class Movimento_diario_postura(models.Model):
     
     fase_postura = models.ForeignKey(Fase_postura, on_delete=models.RESTRICT)
     data = models.DateField(default=date.today)
-    mortalidade = models.PositiveIntegerField()
-    primeira_coleta = models.PositiveIntegerField()
-    segunda_coleta = models.PositiveIntegerField()
+    mortalidade = models.PositiveIntegerField(default=0)
+    primeira_coleta = models.PositiveIntegerField(null=True)
+    segunda_coleta = models.PositiveIntegerField(null=True)
     ovos_quebrados = models.PositiveIntegerField()
     percentual_postura = models.PositiveIntegerField(null=True, blank=True) # Valor calculado automaticamente
 

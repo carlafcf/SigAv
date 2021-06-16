@@ -6,11 +6,18 @@
 {% endblock %}
 
 {% block titulo_lateral %}
-<a href="#" class="btn btn-info btn-icon-split">
+<a href="{% url 'producao:criar_registro_diario_1' pk=producao.id %}" class="btn btn-info btn-icon-split">
     <span class="icon text-white-50">
       <i class="fas fa-info-circle"></i>
     </span>
-    <span class="text">Registro diário</span>
+    <span class="text">Primeira coleta</span>
+  </a>
+
+  <a href="{% url 'producao:criar_registro_diario_2' pk=producao.id %}" class="btn btn-info btn-icon-split">
+    <span class="icon text-white-50">
+      <i class="fas fa-info-circle"></i>
+    </span>
+    <span class="text">Segunda coleta</span>
   </a>
 {% endblock %}
 

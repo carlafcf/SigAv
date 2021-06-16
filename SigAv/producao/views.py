@@ -7,8 +7,8 @@ from django.contrib import messages
 import json
 
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
-from .models import Fase_postura
-from .forms import ProducaoForm
+from .models import Fase_postura, Movimento_diario_postura
+from .forms import ProducaoForm, MovimentoDiarioProducaoForm1, MovimentoDiarioProducaoForm2
 from lote.models import Lote
 
 from django.db import connection
@@ -115,3 +115,81 @@ def buscar_lote_atual():
         return Lote.objects.filter(Q(status="A") | Q(status="B"))[0]
     else:
         return None
+
+
+def criar_registro_diario_1(request, pk):
+    producao=Fase_postura.objects.filter(id=pk)[0]
+    if (request.method == "POST"):
+       
+        form = MovimentoDiarioProducaoForm1(request.POST)
+
+        if (form.is_valid()):
+            data=form.cleaned_data['data']
+            if len(Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)) == 0:
+                movimento_diario = Movimento_diario_postura()
+                movimento_diario.fase_postura=producao
+                movimento_diario.data=form.cleaned_data['data']
+                movimento_diario.mortalidade=form.cleaned_data['mortalidade']
+                movimento_diario.primeira_coleta=form.cleaned_data['primeira_coleta']
+                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
+                movimento_diario.save()
+
+            else:
+                movimento_diario=Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
+                movimento_diario.primeira_coleta=form.cleaned_data['primeira_coleta']
+                movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
+                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
+                movimento_diario.save()
+           
+
+            return redirect('producao:detalhes', pk=producao.id)
+    else:
+
+        form = MovimentoDiarioProducaoForm1()
+ 
+    
+    informacoes = {
+        'form':form,
+        'producao': producao
+    }
+    return render(request, "producao/criar_registro_diario.html", informacoes)
+
+
+def criar_registro_diario_2(request, pk):
+    producao=Fase_postura.objects.filter(id=pk)[0]
+    if (request.method == "POST"):
+       
+        form = MovimentoDiarioProducaoForm2(request.POST)
+
+        if (form.is_valid()):
+            data=form.cleaned_data['data']
+            if len(Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)) == 0:
+                movimento_diario = Movimento_diario_postura()
+                movimento_diario.fase_postura=producao
+                movimento_diario.data=form.cleaned_data['data']
+                movimento_diario.mortalidade=form.cleaned_data['mortalidade']
+                movimento_diario.segunda_coleta=form.cleaned_data['segunda_coleta']
+                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
+                movimento_diario.save()
+
+            else:
+                movimento_diario=Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
+                movimento_diario.segunda_coleta=form.cleaned_data['segunda_coleta']
+                movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
+                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
+                movimento_diario.save()
+           
+
+            return redirect('producao:detalhes', pk=producao.id)
+    else:
+
+        form = MovimentoDiarioProducaoForm2()
+ 
+    
+    informacoes = {
+        'form':form,
+        'producao': producao
+    }
+    return render(request, "producao/criar_registro_diario.html", informacoes)
+
+

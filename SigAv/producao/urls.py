@@ -11,6 +11,9 @@ urlpatterns = [
     path('deletar/<int:pk>', views.Deletar_Producao.as_view(), name='deletar'),
     path('detalhes/<int:pk>', views.detalhes, name='detalhes'),
 
+    path('criar_registro_diario_producao_1/<int:pk>', views.criar_registro_diario_1, name='criar_registro_diario_1'),
+    path('criar_registro_diario_producao_2/<int:pk>', views.criar_registro_diario_2, name='criar_registro_diario_2'),
+    
     path('cadastrar/', views.cadastrar, name='cadastrar'),
 
 ]

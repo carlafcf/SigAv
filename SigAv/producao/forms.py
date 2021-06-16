@@ -1,7 +1,11 @@
 from django import forms
+from django.forms import ModelForm
 from django.db.models import Q
 from django.core.exceptions import ValidationError
 from lote.models import Lote
+from producao.models import Movimento_diario_postura
+from datetime import date
+
 
 class ProducaoForm(forms.Form):
     gaiola = forms.IntegerField(label='Gaiola', initial=0)
@@ -40,4 +44,35 @@ class ProducaoForm(forms.Form):
                 "número de aves final do Lote de Confinamento ("
                 +str(lote_atual.quantidade_aves_final)+
                 ")."
+
+
             )
+
+class MovimentoDiarioProducaoForm1(ModelForm):
+    class Meta:
+        model = Movimento_diario_postura
+        fields = ['data', 'primeira_coleta', 'ovos_quebrados', 'mortalidade']
+
+    def clean_data(self):
+        data = self.cleaned_data['data']
+        
+        if data > date.today() :
+            raise forms.ValidationError("Não é possível realizar um registro para uma data futura.")
+        #elif (len(Registro_diario_lote.objects.filter(data=data, lote=lote_atual)) > 0):
+            #raise forms.ValidationError("Já foi adicionado um registro diário neste lote para esta data.")
+        return data
+
+class MovimentoDiarioProducaoForm2(ModelForm):
+    class Meta:
+        model = Movimento_diario_postura
+        fields = ['data', 'segunda_coleta', 'ovos_quebrados', 'mortalidade']
+
+    def clean_data(self):
+        data = self.cleaned_data['data']
+        
+        if data > date.today() :
+            raise forms.ValidationError("Não é possível realizar um registro para uma data futura.")
+        #elif (len(Registro_diario_lote.objects.filter(data=data, lote=lote_atual)) > 0):
+            #raise forms.ValidationError("Já foi adicionado um registro diário neste lote para esta data.")
+        return data
+
