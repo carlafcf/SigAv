@@ -1,27 +1,21 @@
 
 {% extends "base.html" %}
 {% block titulo %}
-{% if producao == None %}
-  Não há lotes de producao cadastrados
-{% else %}
-  Lote {{producao}}
-  <p class="m-0 h5 font-weight-regular text-gray-500">{{producao.get_status_display}}
-
-  </p>
-{% endif %}
+  {{producao.get_tipo_sistema_display}}
+  <p class="m-0 h5 font-weight-regular text-gray-500">Lote {{producao.lote}}</p>
 {% endblock %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
-    {% block conteudo %}
-    {% load bootstrap4 %}
-</head>
-<body>
+{% block titulo_lateral %}
+<a href="#" class="btn btn-info btn-icon-split">
+    <span class="icon text-white-50">
+      <i class="fas fa-info-circle"></i>
+    </span>
+    <span class="text">Meu botão</span>
+  </a>
+{% endblock %}
+
+
+{% block conteudo %}
 
     <div class="row">
         <div class="col">
@@ -33,24 +27,21 @@
                 <div class="row">
                   <div class="col-lg-4">
                     <p><strong>Data de chegada:</strong> {{producao.data_chegada|date:"d/m/y"}}</p>
-                    <p><strong>Tipo de seistema de criação:</strong> {{producao.get_tipo_sistema_display}}</p>
+                 
                   </div>
                   <div class="col-lg-4">
-                    <p><strong>Quantidade de aves transferidas:</strong> {{producao.quantidade_aves_chegada}}</p>
-                    <p><strong>Quantidade de aves atual:</strong> {{pruducao.quantidade_aves_final}}</p>
+                    <p><strong>Quantidade de aves inicial na produção:</strong> {{producao.quantidade_aves_chegada}}</p>
+                    
                   </div>
                   <div class="col-lg-4">
-                    <p><strong>STATUS:</strong> {{producao.get_status_display}}</p>
-                    <p style="color: #4e73df"><strong>STATUS:</strong> {{producao.status}}</p>
+                 
+                    <p style="color: #4e73df"><strong>Quantidade de aves atual:</strong> {{producao.quantidade_aves_final}}</p>
                   </div>
                 </div>
               </div>
           </div>
         </div>
       </div>
-
-</body>
-</html>
 
 {% endblock %}
 

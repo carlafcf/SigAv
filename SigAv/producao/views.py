@@ -47,7 +47,6 @@ class Detalhar_Producao(DetailView):
 
     model = Fase_postura
     template_name = 'producao/detalhes.html'
-    
     # object
 
 def cadastrar(request):
@@ -101,6 +100,15 @@ def cadastrar(request):
     }
 
     return render(request, "producao/cadastrar.html", informacoes)
+
+def detalhes(request, pk):
+    lote_postura = Fase_postura.objects.filter(pk=pk)[0]
+
+    informacoes = {
+        'producao': lote_postura
+    }
+
+    return render(request, "producao/detalhes.html", informacoes)
 
 def buscar_lote_atual():
     if (len(Lote.objects.filter(Q(status="A") | Q(status="B"))) > 0):
