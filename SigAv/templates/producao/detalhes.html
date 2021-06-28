@@ -24,6 +24,26 @@
 
 {% block conteudo %}
 
+{% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'error' %}
+        <div class="card mb-4 py-0 border-left-danger">
+          <div class="card-body">
+            {{ message }}
+          </div>
+        </div>
+      {% else %}
+        <div class="card mb-4 py-0 border-left-success">
+          <div class="card-body">
+            {{ message }}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if producao != None %}
+
     <div class="row">
         <div class="col">
           <div class="card shadow mb-4">
@@ -49,6 +69,215 @@
           </div>
         </div>
       </div>
+
+
+      <div class="row">
+
+        <!-- Gráfico da Coleta -->
+        <div class="col-lg-6">
+          <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Coleta diária</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-area">
+                <canvas id="mortalidade_chart"></canvas>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+    
+        <!-- Gráfico da mortalidade -->
+        <div class="col-lg-6">
+          <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Mortalidade</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-area">
+                <canvas id="pesos_chart"></canvas>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+    </div>
+    
+
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Registros diários</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Primeira coleta</th>
+                <th>Segunda coleta</th>
+                <th>Mortalidade</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Tabela de registros diários -->
+              {% for movimento in movimento_diario %}
+              <tr>
+                  <td>{{movimento.data|date:"d/m/y (D)" }}</td>
+
+                  <td>{{movimento.primeira_coleta}}</td> 
+                  
+                  <td>{{movimento.segunda_coleta}}</td> 
+                  
+                  <td>{{movimento.mortalidade}}</td>
+                  <td>
+                    <!-- Botão para editar -->
+                    <a href="{% url 'producao:editar_registro' pk=registro.pk %}" class="btn btn-success btn-circle btn-sm">
+                      <i class="fas fa-pencil-alt"></i>
+                    </a>
+  
+                    <!-- Botão para deletar -->
+                    <a href="" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#fm-modal-grid-{{registro.pk}}"
+                            data-tt="tooltip" title="Deletar">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+  
+                    <!-- Modal do deletar -->
+                    <div class="modal fade" id="fm-modal-grid-{{registro.pk}}" tabindex="-1"
+                          role="dialog" aria-labelledBy="fm-modal-grid-{{registro.pk}}"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#4e73df">
+                                    <h5 class="modal-title" id=""><strong><font color="white">Você tem certeza que deseja apagar este registro?</font></strong></h5>
+                                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <p><strong>Data:</strong> {{movimento.data|date:"d/m/y"}}</p>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                              <p><strong>Primeira coleta:</strong> {{movimento.primeira_coleta}}</p>
+                                          </div>
+
+                                          <div class="col-lg-4">
+                                            <p><strong>Segunda coleta:</strong> {{movimento.primeira_coleta}}</p>
+                                        </div>
+  
+                                            <div class="col-lg-4">
+                                                <p><strong>Mortalidade:</strong> {{movimento.mortalidade}}</p>
+                                            </div>
+  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+  
+                                <div class="modal-footer" style="background-color: rgb(78,115,223);">
+                                    <form action="{% url 'lote:deletar_registro' pk=registro.pk %}" method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn btn-danger">Deletar</button>
+                                    </form>
+                                    <button class="btn btn-dark" data-dismiss="modal">Cancelar</button>
+  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+  
+    <a href="{% url 'producao:cadastrar' %}" class="btn btn-primary btn-icon-split">
+      <span class="icon text-white-50">
+        <i class="fas fa-egg"></i>
+      </span>
+      <span id="teste" class="text">Finalizar Lote</span>
+    </a>
+    <a href="#" class="btn btn-danger btn-icon-split">
+      <span class="icon text-white-50">
+        <i class="fas fa-window-close"></i>
+      </span>
+      <span class="text">Acessar lotes finalizados</span>
+    </a>
+  
+{% endif %}
+
+  <script>
+    window.onload = function () {
+      var ctx1 = document.getElementById("mortalidade_chart").getContext('2d');
+      var grafico1 = new Chart(ctx1, {
+          type: 'line',
+          data: {
+              labels: {{  datas_mortalidade | safe }},
+              datasets: [
+              {
+                  label: '#Mortalidade',
+                  data: {{ mortalidade | safe }},
+                  backgroundColor: 'rgba(74, 111, 220, 0)',
+                  borderColor: '#e74a3b',
+                  borderWidth: 2.5
+              }
+              ]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  }]
+              }
+          }
+      });
+      var ctx2 = document.getElementById("pesos_chart").getContext('2d');
+      var grafico2 = new Chart(ctx2, {
+          type: 'line',
+          data: {
+              labels: {{  datas_peso | safe }},
+              datasets: [
+              {
+                  label: 'Peso (kg)',
+                  data: {{ pesos | safe }},
+                  backgroundColor: 'rgba(74, 111, 220, 0)',
+                  borderColor: '#1cc88a',
+                  borderWidth: 2.5
+              }
+              ]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  }]
+              }
+          }
+      });
+      grafico1.render();
+      grafico2.render();
+    }
+  </script>
+
+
 
 {% endblock %}
 
