@@ -69,7 +69,7 @@ class DeletarRegistroDiario(DeleteView):
     def delete(self, *args, **kwargs):
         self.object = self.get_object()
         
-        self.object.movimento.save()
+        self.object.fase_postura.save()
         return super(DeletarRegistroDiario, self).delete(*args, **kwargs)
 
 
