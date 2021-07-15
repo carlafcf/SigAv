@@ -83,7 +83,7 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-area">
-                <canvas id="mortalidade_chart"></canvas>
+                <canvas id="coleta_chart"></canvas>
               </div>
             </div>
           </div>
@@ -95,12 +95,12 @@
           <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Mortalidade</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Mortalidade/#Ovos quebrados</h6>
             </div>
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-area">
-                <canvas id="pesos_chart"></canvas>
+                <canvas id="mortalidade_chart"></canvas>
               </div>
             </div>
           </div>
@@ -131,26 +131,41 @@
               <tr>
                   <td>{{movimento.data|date:"d/m/y (D)" }}</td>
 
-                  <td>{{movimento.primeira_coleta}}</td> 
+                  <td> 
+                    
+                  {% if movimento.primeira_coleta != None %}
+                    {{movimento.primeira_coleta}}
+                  {% else %}
+                    -
+                  {% endif %}
+
+                  </td> 
                   
-                  <td>{{movimento.segunda_coleta}}</td> 
+                  <td>  
+                    
+                  {% if movimento.segunda_coleta != None %}
+                    {{movimento.segunda_coleta}}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td> 
                   
                   <td>{{movimento.mortalidade}}</td>
                   <td>
                     <!-- Botão para editar -->
-                    <a href="{% url 'producao:editar_registro' pk=registro.pk %}" class="btn btn-success btn-circle btn-sm">
+                    <a href="{% url 'producao:editar_registro' pk=movimento.pk %}" class="btn btn-success btn-circle btn-sm">
                       <i class="fas fa-pencil-alt"></i>
                     </a>
   
                     <!-- Botão para deletar -->
-                    <a href="" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#fm-modal-grid-{{registro.pk}}"
+                    <a href="" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#fm-modal-grid-{{movimento.pk}}"
                             data-tt="tooltip" title="Deletar">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
   
                     <!-- Modal do deletar -->
-                    <div class="modal fade" id="fm-modal-grid-{{registro.pk}}" tabindex="-1"
-                          role="dialog" aria-labelledBy="fm-modal-grid-{{registro.pk}}"
+                    <div class="modal fade" id="fm-modal-grid-{{movimento.pk}}" tabindex="-1"
+                          role="dialog" aria-labelledBy="fm-modal-grid-{{movimento.pk}}"
                         aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -185,7 +200,7 @@
                                 </div>
   
                                 <div class="modal-footer" style="background-color: rgb(78,115,223);">
-                                    <form action="{% url 'lote:deletar_registro' pk=registro.pk %}" method="POST">
+                                    <form action="" method="POST">
                                             {% csrf_token %}
                                             <button class="btn btn-danger">Deletar</button>
                                     </form>
@@ -232,7 +247,15 @@
                   label: '#Mortalidade',
                   data: {{ mortalidade | safe }},
                   backgroundColor: 'rgba(74, 111, 220, 0)',
-                  borderColor: '#e74a3b',
+                  borderColor: '#28a745',
+                  borderWidth: 2.5
+              },
+
+              {
+                  label: '#Ovos quebrados',
+                  data: {{ ovos_quebrados | safe }},
+                  backgroundColor: 'rgba(74, 111, 220, 0)',
+                  borderColor: '#17a2b8',
                   borderWidth: 2.5
               }
               ]
@@ -247,17 +270,17 @@
               }
           }
       });
-      var ctx2 = document.getElementById("pesos_chart").getContext('2d');
+      var ctx2 = document.getElementById("coleta_chart").getContext('2d');
       var grafico2 = new Chart(ctx2, {
           type: 'line',
           data: {
-              labels: {{  datas_peso | safe }},
+              labels: {{  datas_coletas | safe }},
               datasets: [
               {
-                  label: 'Peso (kg)',
-                  data: {{ pesos | safe }},
+                  label: '#Ovos',
+                  data: {{ coletas | safe }},
                   backgroundColor: 'rgba(74, 111, 220, 0)',
-                  borderColor: '#1cc88a',
+                  borderColor: '#007bff',
                   borderWidth: 2.5
               }
               ]

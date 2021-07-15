@@ -11,6 +11,7 @@ from .models import Fase_postura, Movimento_diario_postura
 from .forms import ProducaoForm, MovimentoDiarioProducaoForm1, MovimentoDiarioProducaoForm2
 from lote.models import Lote
 
+
 from django.db import connection
 
 class Criar_Producao(CreateView):
@@ -42,6 +43,35 @@ class Deletar_Producao(DeleteView):
     template_name = 'producao/confirmacao_deletar.html'
     success_url = reverse_lazy('producao:listar')
     # object
+
+class EditarRegistroDiario(UpdateView):
+    model = Movimento_diario_postura
+    fields = ['data', 'mortalidade', 'primeira_coleta', 'segunda_coleta', 'ovos_quebrados']
+    template_name = 'producao/editar_registro_diario.html'
+    success_url = reverse_lazy('producao:detalhes', kwargs={'pk':22})
+
+   # ('cadastro:editar_pessoa_view', kwargs={'pk': obj.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fase_postura'] = self.object.fase_postura
+        return context
+
+    def form_valid(self, form):
+
+        self.object.fase_postura.save()
+        return super().form_valid(form)
+
+class DeletarRegistroDiario(DeleteView):
+    model = Movimento_diario_postura
+    success_url = reverse_lazy('producao:detalhes')
+
+    def delete(self, *args, **kwargs):
+        self.object = self.get_object()
+        
+        self.object.movimento.save()
+        return super(DeletarRegistroDiario, self).delete(*args, **kwargs)
+
 
 class Detalhar_Producao(DetailView):
 
@@ -103,9 +133,35 @@ def cadastrar(request):
 
 def detalhes(request, pk):
     lote_postura = Fase_postura.objects.filter(pk=pk)[0]
+    movimento_diario=Movimento_diario_postura.objects.filter(fase_postura=lote_postura).order_by('-data')
+
+    movimento_diario_graficos = movimento_diario.reverse()
+    
+    # Informações para o gráfico
+    datas_mortalidade = []
+    datas_coleta = []
+    mortalidade = []
+    ovos_quebrados = []
+    coletas = []
+
+    for i, registro in enumerate(movimento_diario_graficos):
+        datas_mortalidade.insert(i, str(registro.data))
+        mortalidade.insert(i, registro.mortalidade)
+        ovos_quebrados.insert(i, registro.ovos_quebrados)
+        datas_coleta.insert(i, str(registro.data))
+        coletas.insert(i, int(registro.primeira_coleta or 0) + int(registro.segunda_coleta or 0))
+
+    # Informações para a tela
 
     informacoes = {
-        'producao': lote_postura
+        'producao': lote_postura,
+        'movimento_diario':movimento_diario,
+        'datas_mortalidade': json.dumps(datas_mortalidade),
+        'mortalidade': json.dumps(mortalidade),
+        'ovos_quebrados': json.dumps(ovos_quebrados),
+        'datas_coletas': json.dumps(datas_coleta),
+        'coletas': json.dumps(coletas)
+
     }
 
     return render(request, "producao/detalhes.html", informacoes)
