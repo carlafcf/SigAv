@@ -58,13 +58,15 @@ class EditarRegistroDiario(UpdateView):
         return context
 
     def form_valid(self, form):
+        nova_mortalidade = form.save(commit=False).mortalidade
+        mortalidade_anterior = Movimento_diario_postura.objects.filter(pk=self.object.pk)[0].mortalidade
 
         self.object.fase_postura.save()
         return super().form_valid(form)
 
 class DeletarRegistroDiario(DeleteView):
     model = Movimento_diario_postura
-    success_url = reverse_lazy('producao:detalhes')
+    success_url = reverse_lazy('producao:detalhes', kwargs={'pk':22})
 
     def delete(self, *args, **kwargs):
         self.object = self.get_object()
