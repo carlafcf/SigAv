@@ -15,15 +15,62 @@ Tipos de vacinas
 {% endblock %}
 
 {% block conteudo %}
-    {% if vacina_list %}
-    <ul>
-        {% for vacina in vacina_list %}
-        <li>
-            {{vacina.tipo}} -> {{vacina.doses}}
-        </li>
+    {% if object_list %}
+    
+        {% for vacina in object_list %}
+       {%if forloop.counter0|divisibleby:3 %}
+        <br>
+       <div class="row">
+
+       {%endif%}
+
+                <!-- Earnings (Monthly) Card Example -->
+               
+                
+                <div class="col-lg-4 col-md-6">
+                  <a href="" style="text-decoration: none;">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{vacina.tipo}}</div>
+                            
+                          
+                            <div class="mb-0 text-gray-800"><strong>Tipo:</strong> {{vacina.tipo}}</div>
+                            <div class="mb-0 text-gray-800"><strong>Doses:</strong> {{vacina.doses}}</div>
+                                                      
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-syringe fa-3x" style="color:#007bff"></i>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>              
+
+                
+
+
+        
+         
+
+    {%if forloop.counter|divisibleby:3 %}
+    
+        </div>
+        {% endif %}
+
         {% endfor %}
-    </ul>
+
+     {% if not object_list|length|divisibleby:3 %} 
+      </div>
+     {% endif %}
+    
     {% else %}
-        <p>Não há vacinas cadastrados.</p>
+        <p>Não há produção.</p>
     {% endif %}
+
+  
 {% endblock %}
+
