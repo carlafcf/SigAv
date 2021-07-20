@@ -59,7 +59,7 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'lote:detalhes'%}">
+        <a class="nav-link collapsed" href="{% url 'lote:listar'%}">
           <i class="fas fa-border-all"></i>
           <span>Lote de confinamento</span>
         </a>
@@ -83,7 +83,7 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="{% url 'vacina:listar'%}">
           <i class="fas fa-syringe"></i>
           <span>Aplicação da vacina</span>
         </a>
@@ -119,8 +119,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
            <!-- <h6 class="collapse-header">Status:</h6>-->
-            <a class="collapse-item" href="{% url 'lote:criar' %}">Lote de confinamento</a>
-            <a class="collapse-item" href="{% url 'producao:criar' %}">Lote de Produção</a>           
+            <a class="collapse-item" href="{% url 'lote:criar' %}">Lote de confinamento</a>         
             <a class="collapse-item" href="{% url 'vacina:criar' %}">Tipos de vacinas</a>
           </div>
         </div>

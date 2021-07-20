@@ -26,26 +26,31 @@ Lotes de confinamento
        {%endif%}
 
                 <!-- Earnings (Monthly) Card Example -->
+               
                 {%  if lote.status == "A" %}
                 <div class="col-lg-4 col-md-6">
-                  <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{lote.get_status_display}}</div>
-                          <a class="nav-link collapsed" href="">
-                          <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
-                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
-                          <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.localidade}}</div>
+                  <a href="{% url 'lote:detalhes'%}" style="text-decoration: none;">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                      <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col mr-2">
+                            <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{lote.get_status_display}}</div>
+                            
                           
-                        </a>
-                        </div>
-                        <div class="col-auto">
-                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <div class="mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
+                            <div class="mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
+                            <div class="mb-0 text-gray-800"><strong>Localidade:</strong> {{lote.localidade}}</div>
+                            
+                          
+                          </div>
+                          <div class="col-auto">
+                            <i class="fas fa-kiwi-bird fa-3x" style="color:#007bff"></i>
+                            
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </div>
                 {% elif lote.status == "B"%}
               
@@ -53,56 +58,63 @@ Lotes de confinamento
                 <!-- Earnings (Monthly) Card Example -->
 
                 <div class="col-lg-4 col-md-6">
+                  <a href="{% url 'lote:detalhes'%}" style="text-decoration: none;">
                   <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                           <div class="text-m font-weight-bold text-success text-uppercase mb-1">{{lote.get_status_display}}</div>
-                          <a class="nav-link collapsed" href="">
                          
-                            <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
-                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
-                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.localidade}}</div>
+                         
+                          <div class="mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
+                          <div class="mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
+                          <div class="mb-0 text-gray-800"><strong>Localidade:</strong> {{lote.localidade}}</div>
                           
-                        </a>
+                        
                         </div>
                         <div class="col-auto">
-                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                          <i class="fas fa-kiwi-bird fa-3x" style="color:#28a745"></i>
                         </div>
                       </div>
                     </div>
                   </div>
+                </a>
                 </div>
 
                 {% else %}
 
                 
-                <div class="col-lg-4 col-md-6">
-                  <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="text-m font-weight-bold text-info text-uppercase mb-1">{{lote.get_status_display}}</div>
-                          <a class="nav-link collapsed" href="">
-                         
-                            <div class="h5 mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
-                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
-                            <div class="h5 mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.localidade}}</div>
-                          
-                        </a>
-                        </div>
-                        <div class="col-auto">
-                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                      </div>
-                    </div>
+              
+          <div class="col-lg-4 col-md-6">
+            <a href="{% url 'lote:detalhes'%}" style="text-decoration: none;">
+            <div class="card border-left-info shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-m font-weight-bold text-info text-uppercase mb-1">{{lote.get_status_display}}</div>
+                    
+                   
+                    <div class="mb-0 text-gray-800"><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</div>
+                    <div class="mb-0 text-gray-800"><strong>Quantidade:</strong> {{lote.quantidade_aves_final}}</div>
+                    <div class="mb-0 text-gray-800"><strong>Localidade:</strong> {{lote.localidade}}</div>
+                    
+                 
+                  </div>
+                  <div class="col-auto">
+                    <i class="far fa-list-alt fa-3 fa-3x" style="color:#17a2b8"></i>
+
+                    
                   </div>
                 </div>
-    
-               {%endif%}
-               
+              </div>
+            </div>
+          </a>
+          </div>
 
-          {%if forloop.counter|divisibleby:3 %}
+         {%endif%}
+         
+
+    {%if forloop.counter|divisibleby:3 %}
     
         </div>
         {% endif %}
