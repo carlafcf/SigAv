@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block titulo %}
-Registro diário
-<p class="m-0 h5 font-weight-regular text-gray-500">Lote {{lote}}</p>
+Registro diário da produção
+{{producao.get_tipo_sistema_display}}
+<p class="m-0 h5 font-weight-regular text-gray-500">Lote {{producao.lote}}</p>
 
 {% endblock %}
 
