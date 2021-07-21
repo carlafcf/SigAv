@@ -38,7 +38,7 @@ class Movimento_diario_postura(models.Model):
     mortalidade = models.PositiveIntegerField(default=0)
     primeira_coleta = models.PositiveIntegerField(null=True)
     segunda_coleta = models.PositiveIntegerField(null=True)
-    ovos_quebrados = models.PositiveIntegerField()
+    ovos_quebrados = models.PositiveIntegerField(default=0)
     percentual_postura = models.PositiveIntegerField(null=True, blank=True) # Valor calculado automaticamente
 
     def __str__(self):

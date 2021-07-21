@@ -46,11 +46,8 @@ class Deletar_Producao(DeleteView):
 
 class EditarRegistroDiario(UpdateView):
     model = Movimento_diario_postura
-    fields = ['data', 'mortalidade', 'primeira_coleta', 'segunda_coleta', 'ovos_quebrados']
+    fields = ['data', 'primeira_coleta', 'segunda_coleta', 'ovos_quebrados', 'mortalidade']
     template_name = 'producao/editar_registro_diario.html'
-    success_url = reverse_lazy('producao:detalhes', kwargs={'pk':22})
-
-   # ('cadastro:editar_pessoa_view', kwargs={'pk': obj.id})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -60,19 +57,24 @@ class EditarRegistroDiario(UpdateView):
     def form_valid(self, form):
         nova_mortalidade = form.save(commit=False).mortalidade
         mortalidade_anterior = Movimento_diario_postura.objects.filter(pk=self.object.pk)[0].mortalidade
-
+        self.object.fase_postura.quantidade_aves_final = self.object.fase_postura.quantidade_aves_final + mortalidade_anterior - nova_mortalidade
         self.object.fase_postura.save()
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('producao:detalhes', kwargs={'pk':self.object.fase_postura.pk})
 
 class DeletarRegistroDiario(DeleteView):
     model = Movimento_diario_postura
-    success_url = reverse_lazy('producao:detalhes', kwargs={'pk':22})
 
     def delete(self, *args, **kwargs):
         self.object = self.get_object()
-        
+        self.object.fase_postura.quantidade_aves_final = self.object.fase_postura.quantidade_aves_final + self.object.mortalidade
         self.object.fase_postura.save()
         return super(DeletarRegistroDiario, self).delete(*args, **kwargs)
+        
+    def get_success_url(self):
+        return reverse_lazy('producao:detalhes', kwargs={'pk':self.object.fase_postura.pk})
 
 
 class Detalhar_Producao(DetailView):
@@ -168,18 +170,11 @@ def detalhes(request, pk):
 
     return render(request, "producao/detalhes.html", informacoes)
 
-def buscar_lote_atual():
-    if (len(Lote.objects.filter(Q(status="A") | Q(status="B"))) > 0):
-        return Lote.objects.filter(Q(status="A") | Q(status="B"))[0]
-    else:
-        return None
-
-
 def criar_registro_diario_1(request, pk):
     producao=Fase_postura.objects.filter(id=pk)[0]
     if (request.method == "POST"):
        
-        form = MovimentoDiarioProducaoForm1(request.POST)
+        form = MovimentoDiarioProducaoForm1(producao.id, request.POST)
 
         if (form.is_valid()):
             data=form.cleaned_data['data']
@@ -191,6 +186,8 @@ def criar_registro_diario_1(request, pk):
                 movimento_diario.primeira_coleta=form.cleaned_data['primeira_coleta']
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
                 movimento_diario.save()
+                producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
+                producao.save()
 
             else:
                 movimento_diario=Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
@@ -198,12 +195,14 @@ def criar_registro_diario_1(request, pk):
                 movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
                 movimento_diario.save()
+                producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
+                producao.save()
            
 
             return redirect('producao:detalhes', pk=producao.id)
     else:
 
-        form = MovimentoDiarioProducaoForm1()
+        form = MovimentoDiarioProducaoForm1(producao.id)
  
     
     informacoes = {
@@ -217,7 +216,7 @@ def criar_registro_diario_2(request, pk):
     producao=Fase_postura.objects.filter(id=pk)[0]
     if (request.method == "POST"):
        
-        form = MovimentoDiarioProducaoForm2(request.POST)
+        form = MovimentoDiarioProducaoForm2(producao.id, request.POST)
 
         if (form.is_valid()):
             data=form.cleaned_data['data']
@@ -229,6 +228,8 @@ def criar_registro_diario_2(request, pk):
                 movimento_diario.segunda_coleta=form.cleaned_data['segunda_coleta']
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
                 movimento_diario.save()
+                producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
+                producao.save()
 
             else:
                 movimento_diario=Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
@@ -236,12 +237,14 @@ def criar_registro_diario_2(request, pk):
                 movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
                 movimento_diario.save()
+                producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
+                producao.save()
            
 
             return redirect('producao:detalhes', pk=producao.id)
     else:
 
-        form = MovimentoDiarioProducaoForm2()
+        form = MovimentoDiarioProducaoForm2(producao.id)
  
     
     informacoes = {
@@ -250,4 +253,8 @@ def criar_registro_diario_2(request, pk):
     }
     return render(request, "producao/criar_registro_diario.html", informacoes)
 
-
+def buscar_lote_atual():
+    if (len(Lote.objects.filter(Q(status="A") | Q(status="B"))) > 0):
+        return Lote.objects.filter(Q(status="A") | Q(status="B"))[0]
+    else:
+        return None

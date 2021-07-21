@@ -21,5 +21,7 @@ urlpatterns = [
     path('lote/', include('lote.urls')),
     path('producao/', include('producao.urls')),
     path('vacina/', include('vacina.urls')),
+    path('usuario/', include('usuario.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     
 ]

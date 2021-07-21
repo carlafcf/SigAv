@@ -52,27 +52,35 @@ class MovimentoDiarioProducaoForm1(ModelForm):
     class Meta:
         model = Movimento_diario_postura
         fields = ['data', 'primeira_coleta', 'ovos_quebrados', 'mortalidade']
+    
+    def __init__(self, fase_postura_id, *args, **kwargs):
+        self.fase_postura_id = fase_postura_id
+        super(MovimentoDiarioProducaoForm1, self).__init__(*args, **kwargs)
 
     def clean_data(self):
         data = self.cleaned_data['data']
         
         if data > date.today() :
             raise forms.ValidationError("Não é possível realizar um registro para uma data futura.")
-        #elif (len(Registro_diario_lote.objects.filter(data=data, lote=lote_atual)) > 0):
-            #raise forms.ValidationError("Já foi adicionado um registro diário neste lote para esta data.")
+        elif (len(Movimento_diario_postura.objects.filter(data=data, fase_postura=self.fase_postura_id, primeira_coleta__isnull=False)) > 0):
+            raise forms.ValidationError("Já foi cadastrada a primeira coleta nesta data.")
         return data
 
 class MovimentoDiarioProducaoForm2(ModelForm):
     class Meta:
         model = Movimento_diario_postura
         fields = ['data', 'segunda_coleta', 'ovos_quebrados', 'mortalidade']
+    
+    def __init__(self, fase_postura_id, *args, **kwargs):
+        self.fase_postura_id = fase_postura_id
+        super(MovimentoDiarioProducaoForm2, self).__init__(*args, **kwargs)
 
     def clean_data(self):
         data = self.cleaned_data['data']
         
         if data > date.today() :
             raise forms.ValidationError("Não é possível realizar um registro para uma data futura.")
-        #elif (len(Registro_diario_lote.objects.filter(data=data, lote=lote_atual)) > 0):
-            #raise forms.ValidationError("Já foi adicionado um registro diário neste lote para esta data.")
+        elif (len(Movimento_diario_postura.objects.filter(data=data, fase_postura=self.fase_postura_id, segunda_coleta__isnull=False)) > 0):
+            raise forms.ValidationError("Já foi cadastrada a segunda coleta nesta data.")
         return data
 
