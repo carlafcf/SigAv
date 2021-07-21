@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from datetime import date
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 import json
 
@@ -11,8 +12,9 @@ from .models import Fase_postura, Movimento_diario_postura
 from .forms import ProducaoForm, MovimentoDiarioProducaoForm1, MovimentoDiarioProducaoForm2
 from lote.models import Lote
 
-
-from django.db import connection
+@login_required
+def home(request):
+    return render(request, 'producao/home.html')
 
 class Criar_Producao(CreateView):
     model = Fase_postura
@@ -64,18 +66,17 @@ class EditarRegistroDiario(UpdateView):
     def get_success_url(self):
         return reverse_lazy('producao:detalhes', kwargs={'pk':self.object.fase_postura.pk})
 
-class DeletarRegistroDiario(DeleteView):
+class DeletarMovimentoDiario(DeleteView):
     model = Movimento_diario_postura
 
     def delete(self, *args, **kwargs):
         self.object = self.get_object()
         self.object.fase_postura.quantidade_aves_final = self.object.fase_postura.quantidade_aves_final + self.object.mortalidade
         self.object.fase_postura.save()
-        return super(DeletarRegistroDiario, self).delete(*args, **kwargs)
+        return super(DeletarMovimentoDiario, self).delete(*args, **kwargs)
         
     def get_success_url(self):
         return reverse_lazy('producao:detalhes', kwargs={'pk':self.object.fase_postura.pk})
-
 
 class Detalhar_Producao(DetailView):
 

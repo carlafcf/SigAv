@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+  Lote {{lote}}
+  <p class="m-0 h5 font-weight-regular text-gray-500">{{lote.get_status_display}}</p>
+{% endblock %}
+
+{% block conteudo %}
+  
+<!-- Informações gerais -->
+<div class="row">
+  <div class="col">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Informações</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <p><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</p>
+              <p><strong>Aptidão:</strong> {{lote.get_aptidao_display}}</p>
+            </div>
+            <div class="col-lg-4">
+              <p><strong>Localidade:</strong> {{lote.localidade}}</p>
+              <p><strong>Quantidade inicial:</strong> {{lote.quantidade_aves_chegada}}</p>
+            </div>
+            <div class="col-lg-4">
+              <p><strong>Raça:</strong> {{lote.get_raca_display}}</p>
+              <p style="color: #4e73df"><strong>Quantidade atual:</strong> {{lote.quantidade_aves_final}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+    <!-- Gráfico da mortalidade -->
+    <div class="col-lg-6">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Mortalidade</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="mortalidade_chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Gráfico do peso -->
+    <div class="col-lg-6">
+      <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Peso</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="pesos_chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Registros diários</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Peso</th>
+              <th>Mortalidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Tabela de registros diários -->
+            {% for registro in registros_diarios %}
+            <tr>
+                <td>{{registro.data|date:"d/m/y (D)" }}</td>
+                <td>
+                  {% if registro.peso != None %}
+                    {{registro.peso}} kg
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>{{registro.mortalidade}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+<script>
+  window.onload = function () {
+    var ctx1 = document.getElementById("mortalidade_chart").getContext('2d');
+    var grafico1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: {{  datas_mortalidade | safe }},
+            datasets: [
+            {
+                label: '#Mortalidade',
+                data: {{ mortalidade | safe }},
+                backgroundColor: 'rgba(74, 111, 220, 0)',
+                borderColor: '#007bff',
+                borderWidth: 2.5
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    var ctx2 = document.getElementById("pesos_chart").getContext('2d');
+    var grafico2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: {{  datas_peso | safe }},
+            datasets: [
+            {
+                label: 'Peso (kg)',
+                data: {{ pesos | safe }},
+                backgroundColor: 'rgba(74, 111, 220, 0)',
+                borderColor: '#1cc88a',
+                borderWidth: 2.5
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    grafico1.render();
+    grafico2.render();
+  }
+</script>
+
+{% endblock %}

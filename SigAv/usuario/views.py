@@ -27,15 +27,6 @@ def listar(request):
     }
     return render(request, 'usuario/listar.html', informacoes)
 
-def alterar_status(request, status, pk):
-    usuario = Usuario.objects.get(pk=usuario)
-    if (status==1):
-        usuario.is_active = True
-    else:
-        usuario.is_active = False
-    usuario.save()
-    return redirect('usuario:listar')
-
 @login_required
 def listar_inativos(request):
     usuarios = Usuario.objects.filter(is_active=False)
@@ -43,3 +34,12 @@ def listar_inativos(request):
         'lista_usuarios': usuarios
     }
     return render(request, 'usuario/listar_inativos.html', informacoes)
+
+def alterar_status(request, pk):
+    usuario = Usuario.objects.get(pk=pk)
+    if (usuario.is_active):
+        usuario.is_active = False
+    else:
+        usuario.is_active = True
+    usuario.save()
+    return redirect('usuario:listar')

@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('lote/', include('lote.urls')),
     path('producao/', include('producao.urls')),
+    path('', include('producao.urls', namespace='home')),
     path('vacina/', include('vacina.urls')),
     path('usuario/', include('usuario.urls')),
     path('accounts/', include('django.contrib.auth.urls')),

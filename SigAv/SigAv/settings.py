@@ -131,5 +131,5 @@ STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_URL = 'usuario:login'
-LOGIN_REDIRECT_URL = 'lote:listar'
+LOGIN_REDIRECT_URL = 'home:home'
 LOGOUT_REDIRECT_URL = 'usuario:login'

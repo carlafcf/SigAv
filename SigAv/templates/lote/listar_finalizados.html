@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+  Lotes Finalizados
+{% endblock %}
+
+{% block conteudo %}
+  
+<!-- Informações gerais -->
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Lotes</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Lote</th>
+              <th>Data de abertura</th>
+              <th>Quantidade de aves final</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Tabela de registros diários -->
+            {% for lote in lista_lotes %}
+            <tr>
+                <td>{{lote}}</td>
+                <td>{{lote.data_chegada|date:"d/m/y" }}</td>
+                <td>{{lote.quantidade_aves_final}}</td>
+                <td>
+                  <a href="{% url 'lote:detalhes_finalizado' pk=lote.pk %}" class="btn btn-primary btn-circle btn-sm">
+                    <i class="fas fa-search"></i>
+                  </a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

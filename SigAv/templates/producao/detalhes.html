@@ -190,7 +190,7 @@
                                           </div>
 
                                           <div class="col-lg-4">
-                                            <p><strong>Segunda coleta:</strong> {{movimento.primeira_coleta}}</p>
+                                            <p><strong>Segunda coleta:</strong> {{movimento.segunda_coleta}}</p>
                                           </div>
 
                                           <div class="col-lg-4">
@@ -201,13 +201,12 @@
                                                 <p><strong>Mortalidade:</strong> {{movimento.mortalidade}}</p>
                                             </div>
   
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-  
+
                                 <div class="modal-footer" style="background-color: rgb(78,115,223);">
-                                    <form action="" method="POST">
+                                    <form action="{% url 'producao:deletar_movimento_diario' pk=movimento.pk %}" method="POST">
                                             {% csrf_token %}
                                             <button class="btn btn-danger">Deletar</button>
                                     </form>

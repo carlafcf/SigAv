@@ -7,4 +7,4 @@ class Usuario(auth.models.User, auth.models.PermissionsMixin):
         return "{} {}".format(self.first_name, self.last_name)
 
     class Meta:
-        ordering = ['first_name', 'last_name']
+        ordering = ['is_active', 'first_name', 'last_name']
