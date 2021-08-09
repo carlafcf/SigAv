@@ -14,7 +14,42 @@ from lote.models import Lote
 
 @login_required
 def home(request):
-    return render(request, 'producao/home.html')
+    fase_postura = Fase_postura.objects.filter(status='A')
+
+    qnt_aves_postura = 0
+    media_postura_diaria_A = 0
+    quantidade_postura_A = 0
+    media_postura_diaria_B = 0
+    quantidade_postura_B = 0
+    media_postura_diaria_C = 0
+    quantidade_postura_C = 0
+    for fase in fase_postura:
+        qnt_aves_postura += fase.quantidade_aves_final
+
+        if fase.tipo_sistema == 'A':
+            quantidade_postura_A = quantidade_postura_A+1
+            media_postura_diaria_A = media_postura_diaria_A + fase.media_postura_diaria
+
+        if fase.tipo_sistema == 'B':
+            quantidade_postura_B = quantidade_postura_B+1
+            media_postura_diaria_B = media_postura_diaria_B + fase.media_postura_diaria
+
+        if fase.tipo_sistema == 'C':
+            quantidade_postura_C = quantidade_postura_C+1
+            media_postura_diaria_C = media_postura_diaria_C + fase.media_postura_diaria
+
+    media_postura_diaria_A = media_postura_diaria_A/quantidade_postura_A
+    media_postura_diaria_B = media_postura_diaria_B/quantidade_postura_B
+    media_postura_diaria_C = media_postura_diaria_C/quantidade_postura_C
+
+    informacoes = {
+        'qnt_aves_postura': qnt_aves_postura,
+        'media_postura_diaria_A': media_postura_diaria_A,
+        'media_postura_diaria_B': media_postura_diaria_B,
+        'media_postura_diaria_C': media_postura_diaria_C
+    }
+
+    return render(request, 'home.html', informacoes)
 
 class Criar_Producao(CreateView):
     model = Fase_postura
@@ -187,6 +222,8 @@ def criar_registro_diario_1(request, pk):
                 movimento_diario.primeira_coleta=form.cleaned_data['primeira_coleta']
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
                 movimento_diario.save()
+
+                producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
                 producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
                 producao.save()
 
@@ -196,6 +233,8 @@ def criar_registro_diario_1(request, pk):
                 movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
                 movimento_diario.save()
+
+                producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
                 producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
                 producao.save()
            
@@ -229,6 +268,8 @@ def criar_registro_diario_2(request, pk):
                 movimento_diario.segunda_coleta=form.cleaned_data['segunda_coleta']
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
                 movimento_diario.save()
+
+                producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
                 producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
                 producao.save()
 
@@ -238,6 +279,8 @@ def criar_registro_diario_2(request, pk):
                 movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
                 movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
                 movimento_diario.save()
+
+                producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
                 producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
                 producao.save()
            
@@ -259,3 +302,16 @@ def buscar_lote_atual():
         return Lote.objects.filter(Q(status="A") | Q(status="B"))[0]
     else:
         return None
+
+def atualizar_media_fase_postura(pk):
+    fase_postura = Fase_postura.objects.get(pk=pk)
+    qnt_dias = Movimento_diario_postura.objects.filter(fase_postura=fase_postura).count()
+
+    contagem = 0
+    for movimento in Movimento_diario_postura.objects.filter(fase_postura=fase_postura):
+        if (movimento.primeira_coleta != None):
+            contagem = contagem + movimento.primeira_coleta
+        if (movimento.segunda_coleta != None):
+            contagem = contagem + movimento.segunda_coleta
+    
+    return contagem/qnt_dias
