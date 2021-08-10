@@ -96,29 +96,29 @@
   window.onload = function () {
     var ctx1 = document.getElementById("postura_chart").getContext('2d');
     var grafico1 = new Chart(ctx1, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: {{  ultimo_12 | safe }},
             datasets: [
             {
-                label: 'Último ano',
-                data: {{ ovos_mes | safe }},
+                label: '{{label_3_anos}}',
+                data: {{ ovos_mes_3_anos | safe }},
                 backgroundColor: 'rgba(74, 111, 220, 0)',
-                borderColor: '#007bff',
+                borderColor: '#e74a3b',
                 borderWidth: 2.5
             },
             {
-                label: '2 anos',
+                label: '{{label_2_anos}}',
                 data: {{ ovos_mes_2_anos | safe }},
                 backgroundColor: 'rgba(74, 111, 220, 0)',
                 borderColor: '#1cc88a',
                 borderWidth: 2.5
             },
             {
-                label: '3 anos',
-                data: {{ ovos_mes_3_anos | safe }},
+                label: '{{label}}',
+                data: {{ ovos_mes | safe }},
                 backgroundColor: 'rgba(74, 111, 220, 0)',
-                borderColor: '#e74a3b',
+                borderColor: '#007bff',
                 borderWidth: 2.5
             },
             ]
@@ -130,7 +130,9 @@
                         beginAtZero: true
                     }
                 }]
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
         }
     });
     grafico1.render();

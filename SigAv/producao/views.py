@@ -59,6 +59,10 @@ def home(request):
     ovos_mes = []
     mes_atual = date.today().month #AGOSTO
     ano_atual = date.today().year-1 #2020
+    if mes_atual == 12:
+        label = str(ano_atual+1)
+    else:
+        label = str(ano_atual) + "-" + str(ano_atual+1)
 
     for i in range(1, 13):
         mes_atual += 1 #SETEMBRO
@@ -80,6 +84,10 @@ def home(request):
     ovos_mes_2_anos = []
     mes_atual = date.today().month #AGOSTO
     ano_atual = date.today().year-2 #2019
+    if mes_atual == 12:
+        label_2_anos = str(ano_atual+1)
+    else:
+        label_2_anos = str(ano_atual) + "-" + str(ano_atual+1)
 
     for i in range(1, 13):
         mes_atual += 1 #SETEMBRO
@@ -100,6 +108,10 @@ def home(request):
     ovos_mes_3_anos = []
     mes_atual = date.today().month #AGOSTO
     ano_atual = date.today().year-3 #2018
+    if mes_atual == 12:
+        label_3_anos = str(ano_atual+1)
+    else:
+        label_3_anos = str(ano_atual) + "-" + str(ano_atual+1)
 
     for i in range(1, 13):
         mes_atual += 1 #SETEMBRO
@@ -126,6 +138,9 @@ def home(request):
         'media_postura_diaria_C': media_postura_diaria_C,
 
         'ultimo_12': json.dumps(ultimo_12),
+        'label': label,
+        'label_2_anos': label_2_anos,
+        'label_3_anos': label_3_anos,
         'ovos_mes': json.dumps(ovos_mes),
         'ovos_mes_2_anos': json.dumps(ovos_mes_2_anos),
         'ovos_mes_3_anos': json.dumps(ovos_mes_3_anos)
