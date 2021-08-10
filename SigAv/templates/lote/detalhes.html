@@ -50,35 +50,27 @@
 {% endif %}
 
 {% if lote != None %}
-  
-<!-- Informações gerais -->
-<div class="row">
-  <div class="col">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Informações</h6>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-lg-4">
-              <p><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</p>
-              <p><strong>Aptidão:</strong> {{lote.get_aptidao_display}}</p>
-            </div>
-            <div class="col-lg-4">
-              <p><strong>Localidade:</strong> {{lote.localidade}}</p>
-              <p><strong>Quantidade inicial:</strong> {{lote.quantidade_aves_chegada}}</p>
-            </div>
-            <div class="col-lg-4">
-              <p><strong>Raça:</strong> {{lote.get_raca_display}}</p>
-              <p style="color: #4e73df"><strong>Quantidade atual:</strong> {{lote.quantidade_aves_final}}</p>
-            </div>
-          </div>
-        </div>
-    </div>
-  </div>
-</div>
 
 <div class="row">
+
+  <div class="col-lg-6">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Informações</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <p><strong>Data de chegada:</strong> {{lote.data_chegada|date:"d/m/y"}}</p>
+        <p><strong>Localidade:</strong> {{lote.localidade}}</p>
+        <p><strong>Aptidão:</strong> {{lote.get_aptidao_display}}</p>
+        <p><strong>Raça:</strong> {{lote.get_raca_display}}</p>
+        <p><strong>Quantidade inicial:</strong> {{lote.quantidade_aves_chegada}}</p>
+        <p style="color: #4e73df"><strong>Quantidade atual:</strong> {{lote.quantidade_aves_final}}</p>
+      </div>
+    </div>
+
+  </div>
 
     <!-- Gráfico da mortalidade -->
     <div class="col-lg-6">
@@ -97,22 +89,6 @@
 
     </div>
 
-    <!-- Gráfico do peso -->
-    <div class="col-lg-6">
-      <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Peso</h6>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body">
-          <div class="chart-area">
-            <canvas id="pesos_chart"></canvas>
-          </div>
-        </div>
-      </div>
-
-    </div>
 </div>
 
 <div class="card shadow mb-4">
@@ -125,7 +101,6 @@
           <thead>
             <tr>
               <th>Data</th>
-              <th>Peso</th>
               <th>Mortalidade</th>
               <th></th>
             </tr>
@@ -135,13 +110,6 @@
             {% for registro in registros_diarios %}
             <tr>
                 <td>{{registro.data|date:"d/m/y (D)" }}</td>
-                <td>
-                  {% if registro.peso != None %}
-                    {{registro.peso}} kg
-                  {% else %}
-                    -
-                  {% endif %}
-                </td>
                 <td>{{registro.mortalidade}}</td>
                 <td>
                   <!-- Botão para editar -->

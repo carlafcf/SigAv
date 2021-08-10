@@ -16,6 +16,8 @@ from lote.models import Lote
 def home(request):
     fase_postura = Fase_postura.objects.filter(status='A')
 
+    # MÉDIAS - CARDS
+
     qnt_aves_postura = 0
     media_postura_diaria_A = 0
     quantidade_postura_A = 0
@@ -38,15 +40,95 @@ def home(request):
             quantidade_postura_C = quantidade_postura_C+1
             media_postura_diaria_C = media_postura_diaria_C + fase.media_postura_diaria
 
-    media_postura_diaria_A = media_postura_diaria_A/quantidade_postura_A
-    media_postura_diaria_B = media_postura_diaria_B/quantidade_postura_B
-    media_postura_diaria_C = media_postura_diaria_C/quantidade_postura_C
+    if (quantidade_postura_A != 0):
+        media_postura_diaria_A = media_postura_diaria_A/quantidade_postura_A
+    else:
+        media_postura_diaria_A = "--"
+    if (quantidade_postura_B != 0):
+        media_postura_diaria_B = media_postura_diaria_B/quantidade_postura_B
+    else:
+        media_postura_diaria_B = "--"
+    if (quantidade_postura_C != 0):
+        media_postura_diaria_C = media_postura_diaria_C/quantidade_postura_C
+    else:
+        media_postura_diaria_C = "--"
+
+    # QUANTIDADE DE OVOS - GRÁFICOS
+
+    ultimo_12 = [] #[SET/2020, OUT/2020, NOV/2020, ..., AGO/2021]
+    ovos_mes = []
+    mes_atual = date.today().month #AGOSTO
+    ano_atual = date.today().year-1 #2020
+
+    for i in range(1, 13):
+        mes_atual += 1 #SETEMBRO
+        if (mes_atual == 13):
+            mes_atual = 1 
+        if (mes_atual == 1):
+            ano_atual += 1
+        movimento_mes = Movimento_diario_postura.objects.filter(data__month = mes_atual, data__year = ano_atual)
+        ovos_produzidos = 0
+        for movimento in movimento_mes:
+            if (movimento.primeira_coleta != None):
+                ovos_produzidos += movimento.primeira_coleta
+            if (movimento.segunda_coleta != None):
+                ovos_produzidos += movimento.segunda_coleta
+
+        ovos_mes.insert(i, ovos_produzidos)
+        ultimo_12.insert(i, date(1900, mes_atual, 1).strftime('%B'))
+    
+    ovos_mes_2_anos = []
+    mes_atual = date.today().month #AGOSTO
+    ano_atual = date.today().year-2 #2019
+
+    for i in range(1, 13):
+        mes_atual += 1 #SETEMBRO
+        if (mes_atual == 13):
+            mes_atual = 1 
+        if (mes_atual == 1):
+            ano_atual += 1
+        movimento_mes = Movimento_diario_postura.objects.filter(data__month = mes_atual, data__year = ano_atual)
+        ovos_produzidos = 0
+        for movimento in movimento_mes:
+            if (movimento.primeira_coleta != None):
+                ovos_produzidos += movimento.primeira_coleta
+            if (movimento.segunda_coleta != None):
+                ovos_produzidos += movimento.segunda_coleta
+
+        ovos_mes_2_anos.insert(i, ovos_produzidos)
+
+    ovos_mes_3_anos = []
+    mes_atual = date.today().month #AGOSTO
+    ano_atual = date.today().year-3 #2018
+
+    for i in range(1, 13):
+        mes_atual += 1 #SETEMBRO
+        if (mes_atual == 13):
+            mes_atual = 1 
+        if (mes_atual == 1):
+            ano_atual += 1
+        movimento_mes = Movimento_diario_postura.objects.filter(data__month = mes_atual, data__year = ano_atual)
+        ovos_produzidos = 0
+        for movimento in movimento_mes:
+            if (movimento.primeira_coleta != None):
+                ovos_produzidos += movimento.primeira_coleta
+            if (movimento.segunda_coleta != None):
+                ovos_produzidos += movimento.segunda_coleta
+
+        ovos_mes_3_anos.insert(i, ovos_produzidos)
+
+    # ENVIO DE DADOS
 
     informacoes = {
         'qnt_aves_postura': qnt_aves_postura,
         'media_postura_diaria_A': media_postura_diaria_A,
         'media_postura_diaria_B': media_postura_diaria_B,
-        'media_postura_diaria_C': media_postura_diaria_C
+        'media_postura_diaria_C': media_postura_diaria_C,
+
+        'ultimo_12': json.dumps(ultimo_12),
+        'ovos_mes': json.dumps(ovos_mes),
+        'ovos_mes_2_anos': json.dumps(ovos_mes_2_anos),
+        'ovos_mes_3_anos': json.dumps(ovos_mes_3_anos)
     }
 
     return render(request, 'home.html', informacoes)
@@ -296,6 +378,13 @@ def criar_registro_diario_2(request, pk):
         'producao': producao
     }
     return render(request, "producao/criar_registro_diario.html", informacoes)
+
+def alterar_status(request, pk):
+    fase_postura = Fase_postura.objects.get(pk=pk)
+    fase_postura.status = "B"
+    fase_postura.save()
+
+    return redirect('producao:listar')
 
 def buscar_lote_atual():
     if (len(Lote.objects.filter(Q(status="A") | Q(status="B"))) > 0):

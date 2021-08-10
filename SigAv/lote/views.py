@@ -47,7 +47,7 @@ def criar_registro_diario(request):
         if (form.is_valid()):
             registro_diario = Registro_diario_lote()
             registro_diario.data = form.cleaned_data['data']
-            registro_diario.peso = form.cleaned_data['peso']
+            # registro_diario.peso = form.cleaned_data['peso']
             registro_diario.mortalidade = form.cleaned_data['mortalidade']
             registro_diario.lote = lote_atual
             registro_diario.save()
@@ -92,7 +92,7 @@ class DeletarLote(DeleteView):
 
 class EditarRegistroDiario(UpdateView):
     model = Registro_diario_lote
-    fields = ['data', 'mortalidade', 'peso']
+    fields = ['data', 'mortalidade']
     template_name = 'lote/editar_registro_diario.html'
     success_url = reverse_lazy('lote:detalhes')
 

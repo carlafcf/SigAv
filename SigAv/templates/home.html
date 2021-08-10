@@ -73,4 +73,67 @@
     </div>
   </div>
 </div>
+
+<div class=row>
+<div class="col-lg-12">
+  <div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Postura</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      <div class="chart-area">
+        <canvas id="postura_chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  window.onload = function () {
+    var ctx1 = document.getElementById("postura_chart").getContext('2d');
+    var grafico1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: {{  ultimo_12 | safe }},
+            datasets: [
+            {
+                label: 'Último ano',
+                data: {{ ovos_mes | safe }},
+                backgroundColor: 'rgba(74, 111, 220, 0)',
+                borderColor: '#007bff',
+                borderWidth: 2.5
+            },
+            {
+                label: '2 anos',
+                data: {{ ovos_mes_2_anos | safe }},
+                backgroundColor: 'rgba(74, 111, 220, 0)',
+                borderColor: '#1cc88a',
+                borderWidth: 2.5
+            },
+            {
+                label: '3 anos',
+                data: {{ ovos_mes_3_anos | safe }},
+                backgroundColor: 'rgba(74, 111, 220, 0)',
+                borderColor: '#e74a3b',
+                borderWidth: 2.5
+            },
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    grafico1.render();
+  }
+</script>
 {% endblock %}

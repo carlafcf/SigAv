@@ -21,4 +21,6 @@ urlpatterns = [
     
     path('cadastrar/', views.cadastrar, name='cadastrar'),
 
+    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status')
+
 ]
