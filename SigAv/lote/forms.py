@@ -13,7 +13,7 @@ class LoteForm(ModelForm):
 class RegistroDiarioLoteForm(ModelForm):
     class Meta:
         model = Registro_diario_lote
-        fields = ['data', 'peso', 'mortalidade']
+        fields = ['data', 'mortalidade']
 
     def clean_data(self):
         data = self.cleaned_data['data']

@@ -4,8 +4,8 @@ from lote.models import Lote #importa a classe que stá sendo referênciada atra
 
 
 TIPODECRIACAO = [
-    ('A', 'Free range'),
-    ('B', 'Gaiola'),
+    ('A', 'Cage free'),
+    ('B', 'Gaiolas'),
     ('C', 'Caipira'),
 ]
 
@@ -22,6 +22,7 @@ class Fase_postura(models.Model):
     data_chegada = models.DateField(default=date.today)
     quantidade_aves_chegada = models.PositiveIntegerField()
     quantidade_aves_final = models.PositiveIntegerField(null=True, blank=True)
+    media_postura_diaria = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=1, choices=STATUS, default='A') # Representa a existência ou não das aves no ambiente
     observacoes = models.CharField(max_length=400, null=True, blank=True)
 
@@ -38,7 +39,7 @@ class Movimento_diario_postura(models.Model):
     mortalidade = models.PositiveIntegerField(default=0)
     primeira_coleta = models.PositiveIntegerField(null=True)
     segunda_coleta = models.PositiveIntegerField(null=True)
-    ovos_quebrados = models.PositiveIntegerField()
+    ovos_quebrados = models.PositiveIntegerField(default=0)
     percentual_postura = models.PositiveIntegerField(null=True, blank=True) # Valor calculado automaticamente
 
     def __str__(self):

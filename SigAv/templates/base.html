@@ -31,7 +31,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'producao:home' %}">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-egg"></i>
         </div>
@@ -43,7 +43,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'lote:listar' %}">
+        <a class="nav-link" href="{% url 'producao:home' %}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Home</span></a>
       </li>
@@ -59,9 +59,9 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'lote:listar'%}">
+        <a class="nav-link collapsed" href="{% url 'lote:detalhes'%}">
           <i class="fas fa-border-all"></i>
-          <span>Lote de confinamento</span>
+          <span>Lote inicial</span>
         </a>
       </li>
 
@@ -69,23 +69,6 @@
         <a class="nav-link collapsed" href="{% url 'producao:listar'%}">
           <i class="fas fa-egg"></i>
           <span>Lote de produção</span>
-        </a>
-      </li>
-
-
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Registros de vacinação
-      </div>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'vacina:listar'%}">
-          <i class="fas fa-syringe"></i>
-          <span>Aplicação da vacina</span>
         </a>
       </li>
 
@@ -107,45 +90,17 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-        Informações preliminares
+        Cadastro
         </div>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="{% url 'lote:criar' %}">
+            <i class="fas fa-plus"></i>
+            <span>Lote inicial</span>
+          </a>
+        </li>
+
            
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-plus"></i>
-          <span>Cadastros</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-           <!-- <h6 class="collapse-header">Status:</h6>-->
-            <a class="collapse-item" href="{% url 'lote:criar' %}">Lote de confinamento</a>         
-            <a class="collapse-item" href="{% url 'vacina:criar' %}">Tipos de vacinas</a>
-          </div>
-        </div>
-      </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-           <div class="sidebar-heading">
-              Relatórios
-            </div>
-
-     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseExame" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-list-alt"></i>
-          <span>Gerenciais</span>
-        </a>
-        <div id="collapseExame" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">Tipo:</h6>
-            <a class="collapse-item" href="">Lotes de confinamento</a>
-            <a class="collapse-item" href="">Lotes de produção</a>
-          </div>
-        </div>
-      </li>
       
        <hr class="sidebar-divider">
 
@@ -155,7 +110,7 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="">
+        <a class="nav-link collapsed" href="{% url 'usuario:cadastrar' %}">
           <i class="fas fa-plus"></i>
           <span>Cadastrar</span>
         </a>
@@ -169,31 +124,13 @@
         <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
              <h6 class="collapse-header">Situação:</h6>
-            <a class="collapse-item" href="">Ativos</a>
-            <a class="collapse-item" href="">Inativos</a>
+            <a class="collapse-item" href="{% url 'usuario:listar' %}">Ativos</a>
+            <a class="collapse-item" href="{% url 'usuario:listar_inativos' %}">Inativos</a>
           </div>
         </div>
       </li>
 
-       <hr class="sidebar-divider">
-
-      <div class="sidebar-heading">
-        Local
-      </div>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="fas fa-plus"></i>
-          <span>Cadastrar</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="fa fa-clipboard-list"></i>
-          <span>Listar local</span>
-        </a>
-      </li>
-
+      
 
 
       <!-- Divider -->
@@ -226,39 +163,6 @@
             
             <!-- Nav Item - Alerts -->
 
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">counter</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Central de Alertas
-                </h6>
-
-                  <!-- {% for amostra in amostras_pendentes|slice:"3" %} -->
-
-                    <a class="dropdown-item d-flex align-items-center" href="">
-                      <div class="mr-3">
-                        <div class="icon-circle bg-warning">
-                          <i class="fas fa-exclamation-triangle text-white"></i>
-                        </div>
-                      </div>
-                      <div>
-                       <form action="" method="POST">
-                        <div class="small text-gray-500"></div>
-                        A amostra ainda não foi concluída.
-                       </form>
-                      </div>
-                    </a>
-                  <!-- {% endfor %} -->
-
-                <a class="dropdown-item text-center small text-gray-500" href="">Mostrar todos</a>
-              </div>
-            </li>
 
 
             <div class="topbar-divider d-none d-sm-block"></div>
@@ -270,12 +174,12 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="">
+                <a class="dropdown-item" href="{% url 'usuario:editar' pk=user.pk %}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
+                  Minha conta
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="{% url 'usuario:logout' %}">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -336,25 +240,6 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
   {% block extra_js %}
   {% endblock %}

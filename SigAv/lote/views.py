@@ -47,7 +47,7 @@ def criar_registro_diario(request):
         if (form.is_valid()):
             registro_diario = Registro_diario_lote()
             registro_diario.data = form.cleaned_data['data']
-            registro_diario.peso = form.cleaned_data['peso']
+            # registro_diario.peso = form.cleaned_data['peso']
             registro_diario.mortalidade = form.cleaned_data['mortalidade']
             registro_diario.lote = lote_atual
             registro_diario.save()
@@ -69,6 +69,13 @@ class ListarLotes(ListView):
     template_name = 'lote/listar.html'
     # lote_list
 
+def listar_finalizados(request):
+    lista_lotes = Lote.objects.filter(status="C").order_by('-codigo')
+    informacoes = {
+        'lista_lotes': lista_lotes
+    }
+    return render(request, 'lote/listar_finalizados.html', informacoes)
+
 class EditarLote(UpdateView):
     model = Lote
     fields = ['data_chegada', 'localidade', 'aptidao',
@@ -85,7 +92,7 @@ class DeletarLote(DeleteView):
 
 class EditarRegistroDiario(UpdateView):
     model = Registro_diario_lote
-    fields = ['data', 'mortalidade', 'peso']
+    fields = ['data', 'mortalidade']
     template_name = 'lote/editar_registro_diario.html'
     success_url = reverse_lazy('lote:detalhes')
 
@@ -139,6 +146,34 @@ def detalhes(request):
         'pesos': json.dumps(pesos)
     }
     return render(request, "lote/detalhes.html", informacoes)
+
+def detalhes_finalizado(request, pk):
+    lote_atual = Lote.objects.get(pk=pk)
+    registros_diarios = Registro_diario_lote.objects.filter(lote=lote_atual).order_by("-data")
+    registros_diarios_graficos = registros_diarios.reverse()
+    
+    # Informações para o gráfico
+    datas_mortalidade = []
+    datas_peso = []
+    mortalidade = []
+    pesos = []
+
+    for i, registro in enumerate(registros_diarios_graficos):
+        datas_mortalidade.insert(i, str(registro.data))
+        mortalidade.insert(i, registro.mortalidade)
+        if (registro.peso != None):
+            datas_peso.insert(i, str(registro.data))
+            pesos.insert(i, str(registro.peso))
+
+    informacoes = {
+        'lote': lote_atual,
+        'registros_diarios': registros_diarios,
+        'datas_mortalidade': json.dumps(datas_mortalidade),
+        'mortalidade': json.dumps(mortalidade),
+        'datas_peso': json.dumps(datas_peso),
+        'pesos': json.dumps(pesos)
+    }
+    return render(request, "lote/detalhes_finalizado.html", informacoes)
 
 # View alterar_status
 def alterar_status(request):
