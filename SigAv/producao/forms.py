@@ -8,9 +8,9 @@ from datetime import date
 
 
 class ProducaoForm(forms.Form):
-    gaiola = forms.IntegerField(label='Gaiola', initial=0)
-    free_range = forms.IntegerField(label='Free-range', initial=0)
-    caipira = forms.IntegerField(label='Caipira', initial=0) 
+    gaiola = forms.IntegerField(label='Sistema convencional de gaiolas', initial=0)
+    free_range = forms.IntegerField(label='Sistema Cage free', initial=0)
+    caipira = forms.IntegerField(label='Sistema Caipira', initial=0) 
 
     def clean_gaiola(self):
         gaiola = self.cleaned_data['gaiola']

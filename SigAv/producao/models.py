@@ -4,8 +4,8 @@ from lote.models import Lote #importa a classe que stá sendo referênciada atra
 
 
 TIPODECRIACAO = [
-    ('A', 'Free range'),
-    ('B', 'Gaiola'),
+    ('A', 'Cage free'),
+    ('B', 'Gaiolas'),
     ('C', 'Caipira'),
 ]
 

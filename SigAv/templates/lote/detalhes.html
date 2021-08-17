@@ -2,7 +2,7 @@
 
 {% block titulo %}
 {% if lote == None %}
-  Não há lotes de confinameto cadastrados
+  Não há lote inicial cadastrado
 {% else %}
   Lote {{lote}}
   <p class="m-0 h5 font-weight-regular text-gray-500">{{lote.get_status_display}}

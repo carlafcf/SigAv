@@ -8,10 +8,10 @@ APTIDAO = [
 ]
 
 RACA = [
-    ('A', 'Raça 1'),
-    ('B', 'Raça 2'),
-    ('C', 'Raça 3'),
-    ('D', 'Raça 4'),
+    ('A', 'Lohmann white'),
+    ('B', 'Lohmann Brown'),
+    ('C', 'Linhagem 3'),
+    ('D', 'Linhagem 4'),
 ]
 
 STATUS = [
