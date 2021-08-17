@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from datetime import date
 from django.contrib import messages
+from datetime import timedelta
 
 import json
 
@@ -129,19 +130,21 @@ def detalhes(request):
     mortalidade = []
     pesos = []
 
-    for i, registro in enumerate(registros_diarios_graficos):
-        datas_mortalidade.insert(i, str(registro.data))
-        mortalidade.insert(i, registro.mortalidade)
-        if (registro.peso != None):
-            datas_peso.insert(i, str(registro.data))
-            pesos.insert(i, str(registro.peso))
+    mortalidade_media, semanas = definir_mortalidade_semanal(registros_diarios_graficos)
+
+    # for i, registro in enumerate(registros_diarios_graficos):
+    #     datas_mortalidade.insert(i, str(registro.data))
+    #     mortalidade.insert(i, registro.mortalidade)
+    #     if (registro.peso != None):
+    #         datas_peso.insert(i, str(registro.data))
+    #         pesos.insert(i, str(registro.peso))
 
     # Informações para a tela
     informacoes = {
         'lote': lote_atual,
         'registros_diarios': registros_diarios,
-        'datas_mortalidade': json.dumps(datas_mortalidade),
-        'mortalidade': json.dumps(mortalidade),
+        'datas_mortalidade': json.dumps(semanas),
+        'mortalidade': json.dumps(mortalidade_media),
         'datas_peso': json.dumps(datas_peso),
         'pesos': json.dumps(pesos)
     }
@@ -174,6 +177,34 @@ def detalhes_finalizado(request, pk):
         'pesos': json.dumps(pesos)
     }
     return render(request, "lote/detalhes_finalizado.html", informacoes)
+
+def definir_mortalidade_semanal(registros_diarios):
+    primeira_data = registros_diarios[0].data
+
+    mortalidade_media = []
+    semanas = []
+
+    mortalidade = 0
+    quantidade = 0
+    semana = 1
+
+    for i, registro in enumerate(registros_diarios):
+        if (registro.data > (primeira_data + timedelta(days=6))):
+            primeira_data=primeira_data + timedelta(days=7)
+            mortalidade_media.append(round(mortalidade/quantidade, 2))
+            semanas.append(semana)
+            semana = semana + 1
+            mortalidade = 0
+            quantidade = 0
+
+        mortalidade = mortalidade + registro.mortalidade
+        quantidade = quantidade + 1
+    
+    mortalidade_media.append(round(mortalidade/quantidade, 2))
+    semanas.append(semana)
+    
+    return mortalidade_media, semanas
+        
 
 # View alterar_status
 def alterar_status(request):

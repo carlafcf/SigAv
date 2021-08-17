@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Q
-from datetime import date
+from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -281,27 +281,68 @@ def detalhes(request, pk):
     ovos_quebrados = []
     coletas = []
 
-    for i, registro in enumerate(movimento_diario_graficos):
-        datas_mortalidade.insert(i, str(registro.data))
-        mortalidade.insert(i, registro.mortalidade)
-        ovos_quebrados.insert(i, registro.ovos_quebrados)
-        datas_coleta.insert(i, str(registro.data))
-        coletas.insert(i, int(registro.primeira_coleta or 0) + int(registro.segunda_coleta or 0))
+    postura_media, mortalidade_media, quebra_ovos_media, semanas = definir_dados_semanais(movimento_diario_graficos)
+
+    # for i, registro in enumerate(movimento_diario_graficos):
+    #     datas_mortalidade.insert(i, str(registro.data))
+    #     mortalidade.insert(i, registro.mortalidade)
+    #     ovos_quebrados.insert(i, registro.ovos_quebrados)
+    #     datas_coleta.insert(i, str(registro.data))
+    #     coletas.insert(i, int(registro.primeira_coleta or 0) + int(registro.segunda_coleta or 0))
 
     # Informações para a tela
 
     informacoes = {
         'producao': lote_postura,
         'movimento_diario':movimento_diario,
-        'datas_mortalidade': json.dumps(datas_mortalidade),
-        'mortalidade': json.dumps(mortalidade),
-        'ovos_quebrados': json.dumps(ovos_quebrados),
-        'datas_coletas': json.dumps(datas_coleta),
-        'coletas': json.dumps(coletas)
+        'datas_mortalidade': json.dumps(semanas),
+        'mortalidade': json.dumps(mortalidade_media),
+        'ovos_quebrados': json.dumps(quebra_ovos_media),
+        'datas_coletas': json.dumps(semanas),
+        'coletas': json.dumps(postura_media)
 
     }
 
     return render(request, "producao/detalhes.html", informacoes)
+
+def definir_dados_semanais(registros_diarios):
+    primeira_data = registros_diarios[0].data
+
+    mortalidade_media = []
+    coleta_media = []
+    ovos_quebrados_media = []
+    semanas = []
+
+    mortalidade = 0
+    coleta = 0
+    ovos_quebrados = 0
+    quantidade = 0
+    semana = 1
+
+    for i, registro in enumerate(registros_diarios):
+        if (registro.data > (primeira_data + timedelta(days=13))):
+            primeira_data=primeira_data + timedelta(days=14)
+            mortalidade_media.append(round(mortalidade/quantidade, 2))
+            ovos_quebrados_media.append(round(ovos_quebrados/quantidade, 2))
+            coleta_media.append(round(coleta/quantidade, 2))
+            semanas.append(semana)
+            semana = semana + 1
+            coleta = 0
+            ovos_quebrados = 0
+            mortalidade = 0
+            quantidade = 0
+
+        mortalidade = mortalidade + registro.mortalidade
+        ovos_quebrados = ovos_quebrados + registro.ovos_quebrados
+        coleta = coleta + (registro.primeira_coleta if registro.primeira_coleta != None else 0) + (registro.segunda_coleta if registro.segunda_coleta != None else 0)
+        quantidade = quantidade + 1
+    
+    mortalidade_media.append(round(mortalidade/quantidade, 2))
+    ovos_quebrados_media.append(round(ovos_quebrados/quantidade, 2))
+    coleta_media.append(round(coleta/quantidade, 2))
+    semanas.append(semana)
+    
+    return coleta_media, mortalidade_media, ovos_quebrados_media, semanas
 
 def criar_registro_diario_1(request, pk):
     producao=Fase_postura.objects.filter(id=pk)[0]
@@ -332,7 +373,7 @@ def criar_registro_diario_1(request, pk):
                 movimento_diario.save()
 
                 producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
-                producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
+                producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
            
 
@@ -378,7 +419,7 @@ def criar_registro_diario_2(request, pk):
                 movimento_diario.save()
 
                 producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
-                producao.quantidade_aves_final = producao.quantidade_aves_final - movimento_diario.mortalidade
+                producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
            
 
