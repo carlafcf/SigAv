@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import Vacina, Aplicacao_vacina, Tempo_vacinacao
+from .models import Vacina, AplicacaoVacina, TempoVacinacao
 
 admin.site.register(Vacina)
-admin.site.register(Aplicacao_vacina)
-admin.site.register(Tempo_vacinacao)
+admin.site.register(AplicacaoVacina)
+admin.site.register(TempoVacinacao)
