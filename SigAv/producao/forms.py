@@ -83,4 +83,3 @@ class MovimentoDiarioProducaoForm2(ModelForm):
         elif (len(Movimento_diario_postura.objects.filter(data=data, fase_postura=self.fase_postura_id, segunda_coleta__isnull=False)) > 0):
             raise forms.ValidationError("Já foi cadastrada a segunda coleta nesta data.")
         return data
-

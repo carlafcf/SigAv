@@ -2,7 +2,6 @@ from django.db import models
 from datetime import date
 from lote.models import Lote #importa a classe que stá sendo referênciada através da chave estrangeira
 
-
 TIPODECRIACAO = [
     ('A', 'Cage free'),
     ('B', 'Gaiolas'),
@@ -15,7 +14,6 @@ STATUS = [
 ]
 
 class Fase_postura(models.Model):
-    
     
     lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
     tipo_sistema = models.CharField(max_length=1, choices=TIPODECRIACAO)
