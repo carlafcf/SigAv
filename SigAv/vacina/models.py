@@ -41,6 +41,7 @@ class AplicacaoVacina(models.Model):
       
     def __str__ (self):
         return str(self.vacina) + " - " + str(self.id_lote)
+        
     class Meta:
         ordering = ('data','observacoes')
 
@@ -52,5 +53,6 @@ class TempoVacinacao(models.Model):
 
     def __str__(self):
         return str(self.via_administracao) 
+
     class Meta:
         ordering= ('via_administracao', 'periodo_administracao')

@@ -3,14 +3,6 @@
 {% block titulo %}
 Tipo de Vacina
 {% endblock %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
 
   {% block titulo_lateral %}
   <li>
@@ -26,10 +18,7 @@ Tipo de Vacina
 
   {% block conteudo %}
   {% load bootstrap4 %}
-</head>
 
-{% if user.is_staff %}
-<body>
   <div class="container">
 
     <form method="post">
@@ -38,8 +27,5 @@ Tipo de Vacina
       <input type="submit" class="btn btn-success" value="Cadastrar">
     </form>
   </div>
-</body>
-{% endif %}
 
-</html>
 {% endblock %}
