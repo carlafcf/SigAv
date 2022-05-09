@@ -12,6 +12,19 @@ from .models import Fase_postura, Movimento_diario_postura
 from .forms import ProducaoForm, MovimentoDiarioProducaoForm1, MovimentoDiarioProducaoForm2
 from lote.models import Lote
 
+
+
+def home_bolsista(request):
+    return render(request, 'home_bolsista.html', context={
+        'message': 'Home do bolsista é aqui'
+    })
+
+
+def home_admin(request):
+    return render(request, 'home_admin.html', context ={
+        'message': 'Home do admin será aqui'
+    })
+
 @login_required
 def home(request):
     fase_postura = Fase_postura.objects.filter(status='A')

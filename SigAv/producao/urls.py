@@ -21,6 +21,10 @@ urlpatterns = [
     
     path('cadastrar/', views.cadastrar, name='cadastrar'),
 
-    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status')
+    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status')   
+]
 
+#url patterns das novas views
+urlpatterns += [
+    path('bolsista/', views.home_bolsista, name='home_bolsista'),
 ]
