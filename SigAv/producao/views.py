@@ -22,9 +22,14 @@ def home(request):
         return home_bolsista(request)
 
 def home_bolsista(request):
-    return render(request, 'home_bolsista.html', context={
-        "message": "home do bolsista",
-        })
+
+    producoes = Fase_postura.objects.filter(status='A')
+
+    informacoes = {
+        'lista_producoes': producoes
+    }
+
+    return render(request, 'bolsista/home_bolsista.html', informacoes)
 
 
 def home_admin(request):
@@ -369,7 +374,7 @@ def definir_dados_semanais(registros_diarios):
     return coleta_media, mortalidade_media, ovos_quebrados_media, semanas
 
 
-def criar_registro_diario_1(request, pk):
+def criar_registro_diario_1(request, pk, tipo):
     producao = Fase_postura.objects.filter(id=pk)[0]
     if (request.method == "POST"):
 
@@ -410,7 +415,10 @@ def criar_registro_diario_1(request, pk):
         'form': form,
         'producao': producao
     }
-    return render(request, "producao/criar_registro_diario.html", informacoes)
+    if (tipo == 1):
+        return render(request, "producao/criar_registro_diario.html", informacoes)
+    else:
+        return render(request, "bolsista/criar_registro_diario.html", informacoes)
 
 
 def criar_registro_diario_2(request, pk):
@@ -483,3 +491,14 @@ def atualizar_media_fase_postura(pk):
             contagem = contagem + movimento.segunda_coleta
 
     return contagem/qnt_dias
+
+def coleta_diaria(request, pk):
+    fase_postura = Fase_postura.objects.get(pk=pk)
+    mov_diario = Movimento_diario_postura.objects.filter(fase_postura = fase_postura, data=date.today())
+
+    informacoes = {
+        'mov_diario': mov_diario,
+        'total_ovos': mov_diario[0].primeira_coleta + mov_diario[0].segunda_coleta if len(mov_diario) > 0 else 0
+    }
+
+    return render(request, "bolsista/coleta_diaria.html", informacoes)

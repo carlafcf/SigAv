@@ -13,14 +13,16 @@ urlpatterns = [
     path('deletar/<int:pk>', views.Deletar_Producao.as_view(), name='deletar'),
     path('detalhes/<int:pk>', views.detalhes, name='detalhes'),
 
-    path('criar_registro_diario_producao_1/<int:pk>', views.criar_registro_diario_1, name='criar_registro_diario_1'),
+    path('criar_registro_diario_producao_1/<int:pk>/<int:tipo>', views.criar_registro_diario_1, name='criar_registro_diario_1'),
     path('criar_registro_diario_producao_2/<int:pk>', views.criar_registro_diario_2, name='criar_registro_diario_2'),
 
     path('editar_registro/<int:pk>/', views.EditarRegistroDiario.as_view(), name='editar_registro'),
     path('deletar_movimento_diario/<int:pk>/', views.DeletarMovimentoDiario.as_view(), name='deletar_movimento_diario'),
  
     path('cadastrar/', views.cadastrar, name='cadastrar'),
-    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status')   
+    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status'),
+
+    path('coleta_diaria/<int:pk>', views.coleta_diaria, name='coleta_diaria'),
 ]
 
 

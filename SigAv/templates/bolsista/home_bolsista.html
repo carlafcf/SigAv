@@ -1,17 +1,12 @@
-{% extends "base.html" %}
-{% block titulo %}
-Produção
-{% endblock %}
-
+{% extends 'base_simplificada.html' %}
+{% load bootstrap4 %}
 
 
 {% block conteudo %}
-    {% if object_list %}
+<div class="row" style="justify-content: center;">
 
-  
-    
-    {% for producao in object_list %}
-       {%if forloop.counter0|divisibleby:3 %}
+  {% for producao in lista_producoes %}
+       {%if forloop.counter0|divisibleby:2 %}
         <br>
        <div class="row">
 
@@ -48,7 +43,7 @@ Produção
                 <!-- Earnings (Monthly) Card Example -->
 
                 <div class="col-lg-4 col-md-6">
-                  <a href="{% url 'producao:detalhes' pk=producao.id %}" style="text-decoration: none;">
+                  <a href="{% url 'producao:coleta_diaria' pk=producao.id %}" style="text-decoration: none;">
                   <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
                       <div class="row no-gutters align-items-center">
@@ -107,13 +102,37 @@ Produção
 
         {% endfor %}
 
-     {% if not object_list|length|divisibleby:3 %} 
-      </div>
-     {% endif %}
-    
-    {% else %}
-        <p>Não há produção.</p>
-    {% endif %}
+  <!-- <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="h5 font-weight-bold text-primary text-uppercase mb-4">1ª Coleta do Dia</div>
+                <div class="h6 mb-0 font-weight-bold text-gray-800">Realizar primeira coleta</div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-egg fa-2x" style="color:#007bff"></i>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div> -->
 
-  
+
+  <!-- <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body" style="">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="h5 font-weight-bold text-info text-uppercase mb-4">2ª Coleta do Dia</div>
+            <div class="h6 mb-0 font-weight-bold text-gray-800">Realizar segunda coleta</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-egg  fa-2x" style="color:#36b9cc"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
 {% endblock %}
