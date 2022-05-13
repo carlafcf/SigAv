@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.views.generic import RedirectView
 
 app_name = 'producao'
 
@@ -17,10 +18,15 @@ urlpatterns = [
 
     path('editar_registro/<int:pk>/', views.EditarRegistroDiario.as_view(), name='editar_registro'),
     path('deletar_movimento_diario/<int:pk>/', views.DeletarMovimentoDiario.as_view(), name='deletar_movimento_diario'),
-
-    
+ 
     path('cadastrar/', views.cadastrar, name='cadastrar'),
+    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status')   
+]
 
-    path('alterar_status/<int:pk>', views.alterar_status, name='alterar_status')
 
+
+# url patterns das novas views
+urlpatterns += [
+    path('bolsista/', views.home_bolsista, name='bolsista'),
+    path('', views.home_admin, name='home_admin')
 ]

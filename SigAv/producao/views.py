@@ -5,12 +5,14 @@ from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+
 import json
 
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
 from .models import Fase_postura, Movimento_diario_postura
 from .forms import ProducaoForm, MovimentoDiarioProducaoForm1, MovimentoDiarioProducaoForm2
 from lote.models import Lote
+
 
 @login_required
 def home(request):
@@ -20,10 +22,12 @@ def home(request):
         return home_bolsista(request)
 
 def home_bolsista(request):
-    return render(request, 'home_bolsista.html')
+    return render(request, 'home_bolsista.html', context={
+        "message": "home do bolsista",
+        })
+
 
 def home_admin(request):
-
     fase_postura = Fase_postura.objects.filter(status='A')
 
     # MÉDIAS - CARDS
@@ -75,7 +79,7 @@ def home_admin(request):
         label = str(ano_atual) + "-" + str(ano_atual+1)
 
     for i in range(1, 13):
-        mes_atual += 1 #SETEMBRO
+        mes_atual += 1   #SETEMBRO
         if (mes_atual == 13):
             mes_atual = 1 
         if (mes_atual == 1):
@@ -92,8 +96,8 @@ def home_admin(request):
         ultimo_12.insert(i, date(1900, mes_atual, 1).strftime('%B'))
     
     ovos_mes_2_anos = []
-    mes_atual = date.today().month #AGOSTO
-    ano_atual = date.today().year-2 #2019
+    mes_atual = date.today().month  #AGOSTO
+    ano_atual = date.today().year-2  #2019
     if mes_atual == 12:
         label_2_anos = str(ano_atual+1)
     else:
@@ -105,7 +109,7 @@ def home_admin(request):
             mes_atual = 1 
         if (mes_atual == 1):
             ano_atual += 1
-        movimento_mes = Movimento_diario_postura.objects.filter(data__month = mes_atual, data__year = ano_atual)
+        movimento_mes = Movimento_diario_postura.objects.filter(data__month=mes_atual, data__year=ano_atual)
         ovos_produzidos = 0
         for movimento in movimento_mes:
             if (movimento.primeira_coleta != None):
@@ -116,8 +120,8 @@ def home_admin(request):
         ovos_mes_2_anos.insert(i, ovos_produzidos)
 
     ovos_mes_3_anos = []
-    mes_atual = date.today().month #AGOSTO
-    ano_atual = date.today().year-3 #2018
+    mes_atual = date.today().month   #AGOSTO
+    ano_atual = date.today().year-3  #2018
     if mes_atual == 12:
         label_3_anos = str(ano_atual+1)
     else:
@@ -129,7 +133,7 @@ def home_admin(request):
             mes_atual = 1 
         if (mes_atual == 1):
             ano_atual += 1
-        movimento_mes = Movimento_diario_postura.objects.filter(data__month = mes_atual, data__year = ano_atual)
+        movimento_mes = Movimento_diario_postura.objects.filter(data__month=mes_atual, data__year=ano_atual)
         ovos_produzidos = 0
         for movimento in movimento_mes:
             if (movimento.primeira_coleta != None):
@@ -158,6 +162,7 @@ def home_admin(request):
 
     return render(request, 'home.html', informacoes)
 
+
 class Criar_Producao(CreateView):
     model = Fase_postura
     fields = ['lote', 'tipo_sistema', 'data_chegada', 'quantidade_aves_chegada', 'quantidade_aves_final',
@@ -168,11 +173,13 @@ class Criar_Producao(CreateView):
     def get_success_url(self):
         return reverse_lazy('producao:listar')
 
+
 class Listar_Producao(ListView):
     model = Fase_postura
     queryset = Fase_postura.objects.filter(status='A')
     template_name = 'producao/listar.html'
     # lote_list
+
 
 class Editar_Producao(UpdateView):
     model = Fase_postura
@@ -182,11 +189,13 @@ class Editar_Producao(UpdateView):
     success_url = reverse_lazy('producao:listar')
     # form
 
+
 class Deletar_Producao(DeleteView):
     model = Fase_postura
     template_name = 'producao/confirmacao_deletar.html'
     success_url = reverse_lazy('producao:listar')
     # object
+
 
 class EditarRegistroDiario(UpdateView):
     model = Movimento_diario_postura
@@ -204,9 +213,10 @@ class EditarRegistroDiario(UpdateView):
         self.object.fase_postura.quantidade_aves_final = self.object.fase_postura.quantidade_aves_final + mortalidade_anterior - nova_mortalidade
         self.object.fase_postura.save()
         return super().form_valid(form)
-    
+
     def get_success_url(self):
         return reverse_lazy('producao:detalhes', kwargs={'pk':self.object.fase_postura.pk})
+
 
 class DeletarMovimentoDiario(DeleteView):
     model = Movimento_diario_postura
@@ -216,15 +226,17 @@ class DeletarMovimentoDiario(DeleteView):
         self.object.fase_postura.quantidade_aves_final = self.object.fase_postura.quantidade_aves_final + self.object.mortalidade
         self.object.fase_postura.save()
         return super(DeletarMovimentoDiario, self).delete(*args, **kwargs)
-        
+
     def get_success_url(self):
         return reverse_lazy('producao:detalhes', kwargs={'pk':self.object.fase_postura.pk})
+
 
 class Detalhar_Producao(DetailView):
 
     model = Fase_postura
     template_name = 'producao/detalhes.html'
     # object
+
 
 def cadastrar(request):
     lote_atual = buscar_lote_atual()
@@ -239,28 +251,28 @@ def cadastrar(request):
             if gaiola > 0:
                 fase_postura_gaiola = Fase_postura(
                     lote=lote_atual,
-                    tipo_sistema = 'B',
-                    data_chegada = date.today(),
-                    quantidade_aves_chegada = gaiola,
-                    quantidade_aves_final = gaiola
+                    tipo_sistema='B',
+                    data_chegada=date.today(),
+                    quantidade_aves_chegada=gaiola,
+                    quantidade_aves_final=gaiola
                 )
                 fase_postura_gaiola.save()
             if free_range > 0:
                 fase_postura_free_range = Fase_postura(
                     lote=lote_atual,
-                    tipo_sistema = 'A',
-                    data_chegada = date.today(),
-                    quantidade_aves_chegada = free_range,
-                    quantidade_aves_final = free_range
+                    tipo_sistema='A',
+                    data_chegada=date.today(),
+                    quantidade_aves_chegada=free_range,
+                    quantidade_aves_final=free_range
                 )
                 fase_postura_free_range.save()
             if caipira > 0:
                 fase_postura_caipira = Fase_postura(
                     lote=lote_atual,
-                    tipo_sistema = 'C',
-                    data_chegada = date.today(),
-                    quantidade_aves_chegada = caipira,
-                    quantidade_aves_final = caipira
+                    tipo_sistema='C',
+                    data_chegada=date.today(),
+                    quantidade_aves_chegada=caipira,
+                    quantidade_aves_final=caipira
                 )
                 fase_postura_caipira.save()
 
@@ -270,7 +282,7 @@ def cadastrar(request):
 
     else:
         form = ProducaoForm()
-    
+
     informacoes = {
         'lote': lote_atual,
         'form': form
@@ -278,12 +290,13 @@ def cadastrar(request):
 
     return render(request, "producao/cadastrar.html", informacoes)
 
+
 def detalhes(request, pk):
-    lote_postura = Fase_postura.objects.filter(pk=pk)[0]
-    movimento_diario=Movimento_diario_postura.objects.filter(fase_postura=lote_postura).order_by('-data')
+    lote_postura = Fase_postura.objects.filter(pk=pk)[0],
+    movimento_diario = Movimento_diario_postura.objects.filter(fase_postura=lote_postura).order_by('-data')
 
     movimento_diario_graficos = movimento_diario.reverse()
-    
+
     # Informações para o gráfico
     datas_mortalidade = []
     datas_coleta = []
@@ -314,6 +327,7 @@ def detalhes(request, pk):
     }
 
     return render(request, "producao/detalhes.html", informacoes)
+
 
 def definir_dados_semanais(registros_diarios):
     primeira_data = registros_diarios[0].data
@@ -346,29 +360,30 @@ def definir_dados_semanais(registros_diarios):
         ovos_quebrados = ovos_quebrados + registro.ovos_quebrados
         coleta = coleta + (registro.primeira_coleta if registro.primeira_coleta != None else 0) + (registro.segunda_coleta if registro.segunda_coleta != None else 0)
         quantidade = quantidade + 1
-    
+
     mortalidade_media.append(round(mortalidade/quantidade, 2))
     ovos_quebrados_media.append(round(ovos_quebrados/quantidade, 2))
     coleta_media.append(round(coleta/quantidade, 2))
     semanas.append(semana)
-    
+
     return coleta_media, mortalidade_media, ovos_quebrados_media, semanas
 
+
 def criar_registro_diario_1(request, pk):
-    producao=Fase_postura.objects.filter(id=pk)[0]
+    producao = Fase_postura.objects.filter(id=pk)[0]
     if (request.method == "POST"):
-       
+
         form = MovimentoDiarioProducaoForm1(producao.id, request.POST)
 
         if (form.is_valid()):
-            data=form.cleaned_data['data']
+            data = form.cleaned_data['data']
             if len(Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)) == 0:
                 movimento_diario = Movimento_diario_postura()
-                movimento_diario.fase_postura=producao
-                movimento_diario.data=form.cleaned_data['data']
-                movimento_diario.mortalidade=form.cleaned_data['mortalidade']
-                movimento_diario.primeira_coleta=form.cleaned_data['primeira_coleta']
-                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
+                movimento_diario.fase_postura = producao
+                movimento_diario.data = form.cleaned_data['data']
+                movimento_diario.mortalidade = form.cleaned_data['mortalidade']
+                movimento_diario.primeira_coleta = form.cleaned_data['primeira_coleta']
+                movimento_diario.ovos_quebrados = form.cleaned_data['ovos_quebrados']
                 movimento_diario.save()
 
                 producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
@@ -376,45 +391,42 @@ def criar_registro_diario_1(request, pk):
                 producao.save()
 
             else:
-                movimento_diario=Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
-                movimento_diario.primeira_coleta=form.cleaned_data['primeira_coleta']
-                movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
-                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
+                movimento_diario = Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
+                movimento_diario.primeira_coleta = form.cleaned_data['primeira_coleta']
+                movimento_diario.mortalidade = form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
+                movimento_diario.ovos_quebrados = form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
                 movimento_diario.save()
 
                 producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
                 producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
-           
 
             return redirect('producao:detalhes', pk=producao.id)
     else:
 
-        form = MovimentoDiarioProducaoForm1(producao.id)
- 
-    
+        form = MovimentoDiarioProducaoForm1(producao.id),
+
     informacoes = {
-        'form':form,
+        'form': form,
         'producao': producao
     }
     return render(request, "producao/criar_registro_diario.html", informacoes)
 
 
 def criar_registro_diario_2(request, pk):
-    producao=Fase_postura.objects.filter(id=pk)[0]
+    producao = Fase_postura.objects.filter(id=pk)[0]
     if (request.method == "POST"):
-       
         form = MovimentoDiarioProducaoForm2(producao.id, request.POST)
 
         if (form.is_valid()):
-            data=form.cleaned_data['data']
+            data = form.cleaned_data['data']
             if len(Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)) == 0:
                 movimento_diario = Movimento_diario_postura()
-                movimento_diario.fase_postura=producao
-                movimento_diario.data=form.cleaned_data['data']
-                movimento_diario.mortalidade=form.cleaned_data['mortalidade']
-                movimento_diario.segunda_coleta=form.cleaned_data['segunda_coleta']
-                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados']
+                movimento_diario.fase_postura = producao
+                movimento_diario.data = form.cleaned_data['data']
+                movimento_diario.mortalidade = form.cleaned_data['mortalidade']
+                movimento_diario.segunda_coleta = form.cleaned_data['segunda_coleta']
+                movimento_diario.ovos_quebrados = form.cleaned_data['ovos_quebrados']
                 movimento_diario.save()
 
                 producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
@@ -422,28 +434,27 @@ def criar_registro_diario_2(request, pk):
                 producao.save()
 
             else:
-                movimento_diario=Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
-                movimento_diario.segunda_coleta=form.cleaned_data['segunda_coleta']
-                movimento_diario.mortalidade=form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
-                movimento_diario.ovos_quebrados=form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
+                movimento_diario = Movimento_diario_postura.objects.filter(data=data, fase_postura=producao)[0]
+                movimento_diario.segunda_coleta = form.cleaned_data['segunda_coleta']
+                movimento_diario.mortalidade = form.cleaned_data['mortalidade'] + movimento_diario.mortalidade
+                movimento_diario.ovos_quebrados = form.cleaned_data['ovos_quebrados'] + movimento_diario.ovos_quebrados
                 movimento_diario.save()
 
                 producao.media_postura_diaria = atualizar_media_fase_postura(producao.pk)
                 producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
-           
 
             return redirect('producao:detalhes', pk=producao.id)
     else:
 
         form = MovimentoDiarioProducaoForm2(producao.id)
- 
-    
+
     informacoes = {
         'form':form,
         'producao': producao
     }
     return render(request, "producao/criar_registro_diario.html", informacoes)
+
 
 def alterar_status(request, pk):
     fase_postura = Fase_postura.objects.get(pk=pk)
@@ -452,11 +463,13 @@ def alterar_status(request, pk):
 
     return redirect('producao:listar')
 
+
 def buscar_lote_atual():
     if (len(Lote.objects.filter(Q(status="A") | Q(status="B"))) > 0):
         return Lote.objects.filter(Q(status="A") | Q(status="B"))[0]
     else:
         return None
+
 
 def atualizar_media_fase_postura(pk):
     fase_postura = Fase_postura.objects.get(pk=pk)
@@ -468,5 +481,5 @@ def atualizar_media_fase_postura(pk):
             contagem = contagem + movimento.primeira_coleta
         if (movimento.segunda_coleta != None):
             contagem = contagem + movimento.segunda_coleta
-    
+
     return contagem/qnt_dias
