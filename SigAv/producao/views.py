@@ -14,6 +14,16 @@ from lote.models import Lote
 
 @login_required
 def home(request):
+    if (request.user.is_superuser):
+        return home_admin(request)
+    else:
+        return home_bolsista(request)
+
+def home_bolsista(request):
+    return render(request, 'home_bolsista.html')
+
+def home_admin(request):
+
     fase_postura = Fase_postura.objects.filter(status='A')
 
     # MÉDIAS - CARDS
