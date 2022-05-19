@@ -1,3 +1,4 @@
+from math import prod
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db.models import Q
@@ -297,7 +298,7 @@ def cadastrar(request):
 
 
 def detalhes(request, pk):
-    lote_postura = Fase_postura.objects.filter(pk=pk)[0],
+    lote_postura = Fase_postura.objects.filter(pk=pk)[0]
     movimento_diario = Movimento_diario_postura.objects.filter(fase_postura=lote_postura).order_by('-data')
 
     movimento_diario_graficos = movimento_diario.reverse()
@@ -407,18 +408,16 @@ def criar_registro_diario_1(request, pk, tipo):
                 producao.save()
 
             return redirect('producao:detalhes', pk=producao.id)
+    
     else:
 
-        form = MovimentoDiarioProducaoForm1(producao.id),
+        form = MovimentoDiarioProducaoForm1(producao.id)
 
     informacoes = {
-        'form': form,
+        'form':form,
         'producao': producao
     }
-    if (tipo == 1):
-        return render(request, "producao/criar_registro_diario.html", informacoes)
-    else:
-        return render(request, "bolsista/criar_registro_diario.html", informacoes)
+    return render(request, "producao/criar_registro_diario.html", informacoes)
 
 
 def criar_registro_diario_2(request, pk):
@@ -498,7 +497,8 @@ def coleta_diaria(request, pk):
 
     informacoes = {
         'mov_diario': mov_diario,
-        'total_ovos': mov_diario[0].primeira_coleta + mov_diario[0].segunda_coleta if len(mov_diario) > 0 else 0
+        'total_ovos': mov_diario[0].primeira_coleta + mov_diario[0].segunda_coleta if len(mov_diario) > 0 else 0,
+        'producao': fase_postura
     }
 
     return render(request, "bolsista/coleta_diaria.html", informacoes)
