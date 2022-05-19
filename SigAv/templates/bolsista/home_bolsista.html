@@ -3,12 +3,12 @@
 
 
 {% block conteudo %}
-<div class="row" style="justify-content: center;">
+<div class="row"  style="justify-content:center">
 
   {% for producao in lista_producoes %}
        {%if forloop.counter0|divisibleby:2 %}
         <br>
-       <div class="row">
+       <div class="col-10 btn-toolbar" style="justify-content:center; margin-bottom: 2.5rem">
 
        {%endif%}
 
@@ -18,7 +18,7 @@
                   <a href="{% url 'producao:detalhes' pk=producao.id %}" style="text-decoration: none;">
                     <div class="card border-left-primary shadow h-100 py-2">
                       <div class="card-body">
-                        <div class="row no-gutters align-items-center">
+                        <div class="row no-gutters align-items-center" style="display: flex;">
                           <div class="col mr-2">
                             <div class="text-m font-weight-bold text-primary text-uppercase mb-1">{{producao.get_tipo_sistema_display}}</div>
                             

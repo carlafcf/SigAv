@@ -4,16 +4,29 @@
 
 {% block conteudo %}
 
-<div class="row" style="justify-content: center;">
+<div class="row" style="justify-content: center">
 
-    <h6 class="font-weight-bold">Quantidade de ovos: {{ total_ovos }}</h6> <br>
-    <h6 class="font-weight-bold">Ovos quebrados: {{mov_diario.0.ovos_quebrados}}</h6> <br>
-    <h6 class="font-weight-bold">Mortalidade: {{mov_diario.0.mortalidade}}</h6>
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center" style="display: flex;"></div>
+          <div class="col">
+            <div class="h5 font-weight-bold text-success text-uppercase mb-4">Ultima Coleta Realizada</div>
+            <div class="h6 mb-0 text-gray-800">
+              <h6 class="font-weight-bold">Quantidade de ovos: {{ total_ovos }}</h6> 
+              <h6 class="font-weight-bold">Ovos quebrados: {{mov_diario.0.ovos_quebrados}}</h6>
+              <h6 class="font-weight-bold">Mortalidade: {{mov_diario.0.mortalidade}}</h6>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
     <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-primary shadow h-100 py-2">
         <a href="{% url 'producao:criar_registro_diario_1' pk=producao.id tipo=2 %}">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
+                <div class="row no-gutters align-items-center" style="display: flex;">
                 <div class="col mr-2">
                     <div class="h5 font-weight-bold text-primary text-uppercase mb-4">1ª Coleta do Dia</div>
                     <div class="h6 mb-0 text-gray-800">
@@ -37,7 +50,7 @@
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-info shadow h-100 py-2">
       <div class="card-body" style="">
-        <div class="row no-gutters align-items-center">
+        <div class="row no-gutters align-items-center" style="display: flex;">
           <div class="col mr-2">
             <div class="h5 font-weight-bold text-info text-uppercase mb-4">2ª Coleta do Dia</div>
             <div class="h6 mb-0 text-gray-800">
