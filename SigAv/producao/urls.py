@@ -25,7 +25,11 @@ urlpatterns = [
     path('coleta_diaria/<int:pk>', views.coleta_diaria, name='coleta_diaria'),
 ]
 
-
+# Coleta dos bolsistas
+urlpatterns += [
+    path('bolsista_coleta_diaria_1/<int:pk>/<int:tipo>', views.criar_registro_diario_1, name='bolsista_coleta_diaria_1'),
+    path('bolsista_coleta_diaria_2/<int:pk>', views.criar_registro_diario_2, name='bolsista_coleta_diaria_2')
+]
 
 # url patterns das novas views
 urlpatterns += [
