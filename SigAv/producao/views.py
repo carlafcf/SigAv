@@ -22,6 +22,7 @@ def home(request):
     else:
         return home_bolsista(request)
 
+
 def home_bolsista(request):
 
     producoes = Fase_postura.objects.filter(status='A')
@@ -100,7 +101,7 @@ def home_admin(request):
 
         ovos_mes.insert(i, ovos_produzidos)
         ultimo_12.insert(i, date(1900, mes_atual, 1).strftime('%B'))
-    
+
     ovos_mes_2_anos = []
     mes_atual = date.today().month  #AGOSTO
     ano_atual = date.today().year-2  #2019
@@ -408,16 +409,19 @@ def criar_registro_diario_1(request, pk, tipo):
                 producao.save()
 
             return redirect('producao:detalhes', pk=producao.id)
-    
     else:
 
         form = MovimentoDiarioProducaoForm1(producao.id)
 
     informacoes = {
-        'form':form,
+        'form': form,
         'producao': producao
     }
-    return render(request, "producao/criar_registro_diario.html", informacoes)
+
+    if (request.user.is_superuser):
+        return render(request, "producao/criar_registro_diario.html", informacoes)
+    else:
+        return render(request, "bolsista/criar_registro_diario.html", informacoes)
 
 
 def criar_registro_diario_2(request, pk):
@@ -457,10 +461,13 @@ def criar_registro_diario_2(request, pk):
         form = MovimentoDiarioProducaoForm2(producao.id)
 
     informacoes = {
-        'form':form,
+        'form': form,
         'producao': producao
     }
-    return render(request, "producao/criar_registro_diario.html", informacoes)
+    if (request.user.is_superuser):
+        return render(request, "producao/criar_registro_diario.html", informacoes)
+    else:
+        return render(request, "bolsista/criar_registro_diario.html", informacoes)
 
 
 def alterar_status(request, pk):
@@ -491,9 +498,10 @@ def atualizar_media_fase_postura(pk):
 
     return contagem/qnt_dias
 
+
 def coleta_diaria(request, pk):
     fase_postura = Fase_postura.objects.get(pk=pk)
-    mov_diario = Movimento_diario_postura.objects.filter(fase_postura = fase_postura, data=date.today())
+    mov_diario = Movimento_diario_postura.objects.filter(fase_postura=fase_postura, data=date.today())
 
     total_ovos = int(mov_diario[0].primeira_coleta or 0) + int(mov_diario[0].segunda_coleta or 0) if len(mov_diario) > 0 else 0
 
@@ -502,5 +510,6 @@ def coleta_diaria(request, pk):
         'total_ovos': total_ovos,
         'producao': fase_postura
     }
+    print(informacoes['total_ovos'])
 
     return render(request, "bolsista/coleta_diaria.html", informacoes)
