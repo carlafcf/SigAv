@@ -14,7 +14,13 @@
             <div class="h5 font-weight-bold text-success text-uppercase mb-4">Ultima Coleta Realizada</div>
             <div class="h6 mb-0 text-gray-800">
               <h6 class="font-weight-bold">Quantidade de ovos: {{ total_ovos }}</h6> 
-              <h6 class="font-weight-bold">Ovos quebrados: {{mov_diario.0.ovos_quebrados}}</h6>
+              <h6 class="font-weight-bold">
+                Ovos quebrados: 
+                {% if mov_diario.0.ovos_quebrados == None %}
+                  0
+                {% else %}
+                  {{mov_diario.0.ovos_quebrados}}
+                {% endif %}</h6>
               <h6 class="font-weight-bold">Mortalidade: {{mov_diario.0.mortalidade}}</h6>
             </div>
           </div>
@@ -55,7 +61,12 @@
             <div class="h5 font-weight-bold text-info text-uppercase mb-4">2ª Coleta do Dia</div>
             <div class="h6 mb-0 text-gray-800">
                 {% if mov_diario|length > 0 %}
-                    Quantidade de ovos: {{ mov_diario.0.segunda_coleta }}
+                    Quantidade de ovos: 
+                    {% if mov_diario.0.segunda_coleta == None %}
+                      0
+                    {% else %}
+                      {{mov_diario.0.segunda_coleta}}
+                    {% endif %}
                 {% else %}
                     Coleta não realizada
                 {% endif %}

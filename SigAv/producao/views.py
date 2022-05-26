@@ -495,9 +495,11 @@ def coleta_diaria(request, pk):
     fase_postura = Fase_postura.objects.get(pk=pk)
     mov_diario = Movimento_diario_postura.objects.filter(fase_postura = fase_postura, data=date.today())
 
+    total_ovos = int(mov_diario[0].primeira_coleta or 0) + int(mov_diario[0].segunda_coleta or 0) if len(mov_diario) > 0 else 0
+
     informacoes = {
         'mov_diario': mov_diario,
-        'total_ovos': mov_diario[0].primeira_coleta + mov_diario[0].segunda_coleta if len(mov_diario) > 0 else 0,
+        'total_ovos': total_ovos,
         'producao': fase_postura
     }
 
