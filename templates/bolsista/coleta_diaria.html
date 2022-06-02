@@ -1,0 +1,91 @@
+{% extends 'base_simplificada.html' %}
+{% load bootstrap4 %}
+
+
+{% block conteudo %}
+
+<div class="row" style="justify-content: center;">
+
+  
+    <div class="col-md-1 col-md-3 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="h5 font-weight-bold text-success text-uppercase mb-4">Ultima Coleta Realizada</div>
+              <div class="h6 mb-0 text-gray-800">
+                <h6 class="font-weight-bold">Quantidade de ovos: {{ total_ovos }}</h6> 
+                <h6 class="font-weight-bold">
+                  Ovos quebrados: 
+                  {% if mov_diario.0.ovos_quebrados == None %}
+                    0
+                  {% else %}
+                    {{mov_diario.0.ovos_quebrados}}
+                  {% endif %}</h6>
+                <h6 class="font-weight-bold">Mortalidade: {{mov_diario.0.mortalidade}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+      <div class="col-xl-2 col-md-6 mb-4">
+      <a href="{% url 'producao:bolsista_coleta_diaria_1' pk=producao.id tipo=2 %}">
+        <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                      <div class="h5 font-weight-bold text-primary text-uppercase mb-4">1ª Coleta do Dia</div>
+                      <div class="h6 mb-0 text-gray-800">
+                          {% if mov_diario|length > 0 %}
+                              Quantidade de ovos: {{ mov_diario.0.primeira_coleta }}
+                          {% else %}
+                              Coleta não realizada
+                          {% endif %}
+                      </div>
+                  </div>
+                  <div class="col-auto">
+                      <i class="fas fa-egg fa-2x" style="color:#007bff"></i>
+                  </div>
+                  </div>
+            </div>
+        </div>
+    </a>
+    </div>
+  
+  
+    <div class="col-xl-2 col-md-6 mb-4">
+      <a href="{% url 'producao:bolsista_coleta_diaria_2' pk=producao.id %}">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body" style="">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="h5 font-weight-bold text-info text-uppercase mb-4">2ª Coleta do Dia</div>
+              <div class="h6 mb-0 text-gray-800">
+                  {% if mov_diario|length > 0 %}
+                      Quantidade de ovos: 
+                      {% if mov_diario.0.segunda_coleta == None %}
+                        0
+                      {% else %}
+                        {{mov_diario.0.segunda_coleta}}
+                      {% endif %}
+                  {% else %}
+                      Coleta não realizada
+                  {% endif %}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-egg  fa-2x" style="color:#36b9cc"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      </a>
+    </div>
+  </div>
+ 
+ 
+
+
+{% endblock %}

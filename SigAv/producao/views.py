@@ -324,7 +324,7 @@ def detalhes(request, pk):
 
     informacoes = {
         'producao': lote_postura,
-        'movimento_diario':movimento_diario,
+        'movimento_diario': movimento_diario,
         'datas_mortalidade': json.dumps(semanas),
         'mortalidade': json.dumps(mortalidade_media),
         'ovos_quebrados': json.dumps(quebra_ovos_media),
@@ -352,7 +352,7 @@ def definir_dados_semanais(registros_diarios):
 
     for i, registro in enumerate(registros_diarios):
         if (registro.data > (primeira_data + timedelta(days=13))):
-            primeira_data=primeira_data + timedelta(days=14)
+            primeira_data = primeira_data + timedelta(days=14)
             mortalidade_media.append(round(mortalidade/quantidade, 2))
             ovos_quebrados_media.append(round(ovos_quebrados/quantidade, 2))
             coleta_media.append(round(coleta/quantidade, 2))
@@ -408,7 +408,10 @@ def criar_registro_diario_1(request, pk, tipo):
                 producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
 
-            return redirect('producao:detalhes', pk=producao.id)
+            if(request.user.is_superuser):
+                return redirect('producao:detalhes', pk=producao.id)
+            else:
+                return redirect('bolsista/bolsista_coleta_diaria_1.html', pk=producao.id)
     else:
 
         form = MovimentoDiarioProducaoForm1(producao.id)
@@ -455,7 +458,11 @@ def criar_registro_diario_2(request, pk):
                 producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
 
-            return redirect('producao:detalhes', pk=producao.id)
+            if(request.user.is_superuser):
+                return redirect('producao:detalhes', pk=producao.id)
+            else:
+                return redirect('bolsista/bolsista_coleta_diaria_2.html', pk=producao.id)
+
     else:
 
         form = MovimentoDiarioProducaoForm2(producao.id)

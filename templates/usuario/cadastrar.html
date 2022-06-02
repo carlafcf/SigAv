@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block titulo %}
+  Cadastrar novo usuário
+{% endblock %}
+
+{% block conteudo %}
+<!-- Informações gerais -->
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-success" name="" value="Cadastrar">
+  </form>
+{% endblock %}
