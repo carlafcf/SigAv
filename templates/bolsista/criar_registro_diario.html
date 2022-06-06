@@ -5,6 +5,15 @@ Registro diário
 
 {% endblock %}
 
+{% block titulo_lateral %}
+<a href="{% url 'producao:coleta_diaria' pk=producao.id %}" class="btn btn-danger btn-icon-split">
+  <span class="icon text-white-50">
+    <i class="fas fa-arrow-circle-left"></i>
+  </span>
+  <span class="text">Voltar</span>
+</a>
+{% endblock %}
+
 {% block conteudo %}     
 {% if messages %}
     {% for message in messages %}

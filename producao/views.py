@@ -408,7 +408,10 @@ def criar_registro_diario_1(request, pk, tipo):
                 producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
 
-            return redirect('producao:detalhes', pk=producao.id)
+            if (request.user.is_superuser):
+                return redirect("producao:detalhes", pk=producao.id)
+            else:
+                return redirect("producao:coleta_diaria",  pk=producao.id)  
     else:
 
         form = MovimentoDiarioProducaoForm1(producao.id)
@@ -455,7 +458,10 @@ def criar_registro_diario_2(request, pk):
                 producao.quantidade_aves_final = producao.quantidade_aves_final - form.cleaned_data['mortalidade']
                 producao.save()
 
-            return redirect('producao:detalhes', pk=producao.id)
+            if (request.user.is_superuser):
+                return redirect("producao:detalhes", pk=producao.id)
+            else:
+                return redirect("producao:coleta_diaria",  pk=producao.id)
     else:
 
         form = MovimentoDiarioProducaoForm2(producao.id)

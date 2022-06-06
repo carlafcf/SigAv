@@ -46,15 +46,10 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
+                <span class="mr-2 d-lg-inline text-gray-600 small">{{user.first_name}} {{user.last_name}}</span>
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{% url 'usuario:editar' pk=user.pk %}">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Minha conta
-                </a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'usuario:logout' %}">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
@@ -94,14 +89,14 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      {% comment %} <footer class="sticky-footer bg-white">
+      <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span> SigAv EAJ/UFRN</span>
  
           </div>
         </div>
-      </footer> {% endcomment %}
+      </footer>
       <!-- End of Footer -->
 
     </div>
@@ -119,6 +114,7 @@
   {% endblock %}
 
   <!-- Bootstrap core JavaScript-->
+  
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
@@ -138,7 +134,6 @@
   <script src="{% static 'vendor/datatables/jquery.dataTables.js' %}"></script>
   <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
   <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
-
 </body>
 
 </html>
