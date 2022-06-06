@@ -20,8 +20,9 @@ STATUS = [
     ('C', 'Finalizado'),
 ]
 
+
 class Lote(models.Model):
-    
+
     codigo = models.CharField(max_length=50, unique=True)
     aptidao = models.CharField(max_length=1, choices=APTIDAO, default='B')
     data_chegada = models.DateField(default=date.today)
@@ -35,10 +36,11 @@ class Lote(models.Model):
         return self.codigo
 
     class Meta:
-        ordering = ('status','data_chegada',)
+        ordering = ('status', 'data_chegada',)
+
 
 class Registro_diario_lote(models.Model):
-    
+
     peso = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
     mortalidade = models.PositiveIntegerField(default=0)
     lote = models.ForeignKey(Lote, on_delete=models.RESTRICT)
@@ -48,4 +50,4 @@ class Registro_diario_lote(models.Model):
         return str(self.lote) + " - " + str(self.data)
 
     class Meta:
-        ordering = ('-lote','-data',)
+        ordering = ('-lote', '-data',)
